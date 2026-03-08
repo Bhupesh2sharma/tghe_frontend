@@ -13,6 +13,7 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  Share2,
 } from "lucide-react";
 import { useCreateEnquiryMutation, useGetPackageQuery } from "../../../../store/api";
 import NewsletterSection from "../../../components/NewsletterSection";
@@ -34,20 +35,21 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
   const [showStatus, setShowStatus] = useState(false);
   const [statusType, setStatusType] = useState<"success" | "error" | null>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [isCopied, setIsCopied] = useState(false);
   const [createEnquiry, { isLoading: isEnquirySubmitting }] = useCreateEnquiryMutation();
 
   const heroImages: { src: string; caption: string }[] =
     exp?.images && exp.images.length > 0
       ? exp.images.map((src) => ({
-          src,
-          caption: exp?.title || exp?.name || "Experience",
-        }))
+        src,
+        caption: exp?.title || exp?.name || "Experience",
+      }))
       : [
-          {
-            src: exp?.image || PLACEHOLDER_IMAGE,
-            caption: exp?.title || exp?.name || "Experience",
-          },
-        ];
+        {
+          src: exp?.image || PLACEHOLDER_IMAGE,
+          caption: exp?.title || exp?.name || "Experience",
+        },
+      ];
   const heroTotal = heroImages.length;
   const goPrev = () => setHeroIndex((i) => (i <= 0 ? heroTotal - 1 : i - 1));
   const goNext = () => setHeroIndex((i) => (i >= heroTotal - 1 ? 0 : i + 1));
@@ -70,6 +72,32 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
   const exclusionsList = exp?.exclusions ?? [];
   const paymentRefundContent = exp?.paymentRefundPolicy?.content ?? "";
   const termsContent = exp?.termsCondition?.content ?? "";
+
+  const handleShare = async () => {
+    const shareData = {
+      title: exp?.title || exp?.name || "The Great Himalayan Escape",
+      text: `Check out this amazing experience: ${exp?.title || exp?.name}`,
+      url: window.location.href,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        if ((err as Error).name !== "AbortError") {
+          console.error("Error sharing:", err);
+        }
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
+      } catch (err) {
+        console.error("Error copying to clipboard:", err);
+      }
+    }
+  };
 
   const handleEnquirySubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -131,11 +159,21 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
           <div className="mb-8 flex items-center justify-between gap-4 text-sm font-medium text-white/80">
             <Link
               href="/experiences"
-              className="inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-1.5 text-xs uppercase tracking-[0.18em] hover:bg-white/10"
+              className="inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-1.5 text-xs uppercase tracking-[0.18em] transition hover:bg-white/10"
+              style={{ fontFamily: '"Lexend Deca", sans-serif' }}
             >
               <span className="text-base">←</span>
               <span>Back to experiences</span>
             </Link>
+
+            <button
+              onClick={handleShare}
+              className="inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-1.5 text-xs uppercase tracking-[0.18em] transition hover:bg-white/10"
+              style={{ fontFamily: '"Lexend Deca", sans-serif' }}
+            >
+              <Share2 size={14} className={isCopied ? "text-green-400" : ""} />
+              <span>{isCopied ? "Copied!" : "Share"}</span>
+            </button>
           </div>
 
           <div className="flex flex-col gap-0 lg:flex-row lg:items-stretch lg:gap-10">

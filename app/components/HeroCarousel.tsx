@@ -61,7 +61,7 @@ export default function HeroCarousel() {
     };
 
     return (
-        <div className="relative flex h-[480px] w-full items-center justify-center overflow-hidden pt-2 pb-0 md:h-[580px]">
+        <div className="relative flex h-[580px] w-full items-center justify-center overflow-hidden pt-2 pb-0 md:h-[680px]">
             {/* 3D Stack Layer */}
             <div
                 className="relative flex h-full w-full items-center justify-center"
@@ -85,7 +85,7 @@ export default function HeroCarousel() {
                                     stiffness: 120,
                                     damping: 18,
                                 }}
-                                className="absolute h-[400px] w-[250px] cursor-pointer overflow-hidden rounded-[24px] shadow-none md:h-[480px] md:w-[280px] md:shadow-2xl"
+                                className="absolute h-[480px] w-[250px] cursor-pointer overflow-hidden rounded-[24px] shadow-none md:h-[580px] md:w-[280px] md:shadow-2xl"
                                 onClick={() => setCurrentIndex(index)}
                                 style={{
                                     transformStyle: "preserve-3d",

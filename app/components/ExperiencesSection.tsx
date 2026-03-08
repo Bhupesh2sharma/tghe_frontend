@@ -33,21 +33,21 @@ function ExperienceCard({
   return (
     <motion.article
       variants={fadeInVariants}
-      className="flex h-full w-[240px] min-w-[240px] max-w-[240px] shrink-0 flex-col items-center overflow-hidden rounded-[40px] bg-white p-6 shadow-xl transition-transform hover:-translate-y-1 sm:w-[260px] sm:min-w-[260px] sm:max-w-[260px] md:w-[280px] md:min-w-[280px] md:max-w-[280px] lg:w-[300px] lg:min-w-[300px] lg:max-w-[300px]"
+      className="flex h-full w-[290px] min-w-[290px] max-w-[290px] shrink-0 flex-col items-center overflow-hidden rounded-[48px] rounded-tr-[24px] rounded-br-[24px] bg-white p-6 shadow-xl transition-transform hover:-translate-y-1 sm:w-[320px] sm:min-w-[320px] sm:max-w-[320px] lg:w-[340px] lg:min-w-[340px] lg:max-w-[340px] lg:rounded-[64px] lg:rounded-tr-[32px] lg:rounded-br-[32px]"
     >
-      <div className="relative aspect-[16/11] w-full shrink-0 overflow-hidden rounded-[32px] bg-neutral-100">
+      <div className="relative aspect-[16/11] w-full shrink-0 overflow-hidden rounded-[40px] rounded-tr-[24px] bg-neutral-100 lg:rounded-[48px] lg:rounded-tr-[32px]">
         <Image
           src={image || PLACEHOLDER_IMAGE}
           alt={title}
           fill
           className="object-cover"
-          sizes="(max-width: 640px) 240px, (max-width: 1024px) 280px, 300px"
+          sizes="(max-width: 640px) 290px, (max-width: 1024px) 320px, 340px"
         />
       </div>
 
       <div className="flex flex-1 flex-col items-center justify-between gap-6 py-8">
         <div className="flex flex-col items-center gap-4">
-          <h3 className="line-clamp-2 min-h-[60px] text-center text-2xl font-bold uppercase leading-[1.1] tracking-tight text-[#00843d] md:min-h-[72px] md:text-3xl" style={{ fontFamily: '"Lexend Deca", sans-serif' }}>
+          <h3 className="line-clamp-2 min-h-[50px] text-center text-xl font-bold uppercase leading-[1.1] tracking-tight text-[#00843d] md:min-h-[72px] md:text-3xl" style={{ fontFamily: '"Lexend Deca", sans-serif' }}>
             {title}
           </h3>
           <p className="text-lg font-semibold text-[#00843d] md:text-xl">
@@ -108,7 +108,7 @@ export default function ExperiencesSection() {
 
   const handleScroll = (direction: "left" | "right") => {
     if (!scrollRef.current) return;
-    const cardWidth = 300 + 32; // card width + gap
+    const cardWidth = 320 + 32; // card width (avg) + gap
     scrollRef.current.scrollBy({
       left: direction === "left" ? -cardWidth : cardWidth,
       behavior: "smooth",
@@ -142,11 +142,11 @@ export default function ExperiencesSection() {
         Experiences.
       </motion.h2>
 
-      <div className="relative mx-auto max-w-[1000px]">
-        {/* Navigation Controls - only show if there's enough content to scroll */}
-        {packages.length > 1 && (
+      <div className="relative mx-auto max-w-[1100px]">
+        {/* Navigation Controls - only show if shouldLoop is active or there are enough items */}
+        {(shouldLoop || packages.length > 3) && (
           <>
-            <div className="absolute -left-6 top-1/2 z-20 -translate-y-1/2 md:-left-12 lg:-left-16">
+            <div className="absolute -left-6 top-1/2 z-30 -translate-y-1/2 md:-left-12 lg:-left-16">
               <button
                 type="button"
                 onClick={() => handleScroll("left")}
@@ -159,7 +159,7 @@ export default function ExperiencesSection() {
               </button>
             </div>
 
-            <div className="absolute -right-6 top-1/2 z-20 -translate-y-1/2 md:-right-12 lg:-right-16">
+            <div className="absolute -right-6 top-1/2 z-30 -translate-y-1/2 md:-right-12 lg:-right-16">
               <button
                 type="button"
                 onClick={() => handleScroll("right")}
