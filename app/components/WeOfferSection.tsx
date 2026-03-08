@@ -1,4 +1,16 @@
+"use client";
+
 import Image from "next/image";
+import { motion } from "framer-motion";
+
+const fadeInVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" as const }
+  }
+} as const;
 
 const services = [
   { label: "transport", img: "/img/1.png" },
@@ -11,16 +23,34 @@ const services = [
 
 export default function WeOfferSection() {
   return (
-    <section className="relative w-full bg-[#ff4106] px-6 py-16 sm:px-12 sm:py-24 md:px-20 md:py-28 lg:px-24">
+    <section className="relative w-full bg-[#ff4106] px-6 py-8 sm:px-12 sm:py-10 md:px-20 md:py-12 lg:px-24">
       <div className="mx-auto max-w-[1400px]">
-        <h2 className="mb-14 text-center text-6xl font-extrabold tracking-tight text-white sm:text-7xl md:mb-16 md:text-8xl lg:text-[100px]">
+        <motion.h2
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={fadeInVariants}
+          className="mb-14 text-center font-semibold tracking-tight text-white md:mb-16"
+          style={{
+            fontFamily: '"Lexend Deca", sans-serif',
+            fontSize: "clamp(40px, 8vw, 92px)",
+            lineHeight: "1"
+          }}
+        >
           We offer.
-        </h2>
+        </motion.h2>
 
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-2 sm:gap-4 md:gap-6">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ staggerChildren: 0.1 }}
+          className="mx-auto grid w-full max-w-6xl grid-cols-3 gap-6 sm:flex sm:items-center sm:justify-between sm:gap-4 md:gap-6"
+        >
           {services.map(({ label, img }) => (
-            <div
+            <motion.div
               key={label}
+              variants={fadeInVariants}
               className="group flex flex-1 flex-col items-center text-center transition-transform hover:scale-105"
             >
               <div className="relative h-14 w-14 shrink-0 sm:h-20 sm:w-20 md:h-24 md:w-24 lg:h-32 lg:w-32">
@@ -31,12 +61,18 @@ export default function WeOfferSection() {
                   className="object-contain"
                 />
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Decorative line at the bottom */}
-        <div className="mx-auto mt-20 h-[1.5px] w-[95%] bg-white/30 md:mt-24" />
+        <motion.div
+          initial={{ scaleX: 0, opacity: 0 }}
+          whileInView={{ scaleX: 1, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: "easeInOut", delay: 0.5 }}
+          className="mx-auto mt-10 h-[1.5px] w-full bg-white/30 md:mt-12 origin-center"
+        />
       </div>
     </section>
   );

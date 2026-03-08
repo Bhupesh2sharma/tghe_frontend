@@ -12,6 +12,7 @@ import {
   Linkedin,
   Youtube,
 } from "lucide-react";
+import NewsletterSection from "../../components/NewsletterSection";
 
 const contactCards = [
   {
@@ -37,10 +38,10 @@ const contactCards = [
     title: "Social Media",
     icon: null,
     social: [
-      { name: "Facebook", href: "https://facebook.com", Icon: Facebook },
-      { name: "Instagram", href: "https://instagram.com", Icon: Instagram },
-      { name: "LinkedIn", href: "https://linkedin.com", Icon: Linkedin },
-      { name: "YouTube", href: "https://youtube.com", Icon: Youtube },
+      { name: "Facebook", href: "https://www.facebook.com/people/The-Great-Himalayan-Escape/61560444660318/", Icon: Facebook },
+      { name: "Instagram", href: "https://www.instagram.com/thegreathimalayanescape/", Icon: Instagram },
+      { name: "LinkedIn", href: "https://www.linkedin.com/in/the-great-himalayan-escape-521ab1311/", Icon: Linkedin },
+      { name: "YouTube", href: "https://www.youtube.com/@thegreathimalayanescape", Icon: Youtube },
     ],
   },
 ];
@@ -101,7 +102,7 @@ export default function ContactPage() {
                   {card.title}
                 </p>
                 {card.social ? (
-                  <div className="mt-4 flex flex-wrap gap-4">
+                  <div className="mt-4 flex flex-nowrap items-center gap-4">
                     {card.social.map(({ name, href, Icon }) => (
                       <a
                         key={name}
@@ -218,7 +219,7 @@ export default function ContactPage() {
             <div className="relative aspect-[16/10] w-full bg-gray-200 sm:aspect-[2/1]">
               <iframe
                 title="Find us on the map - The Great Himalayan Escape, Deorali, Gangtok"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d55382.817!2d88.6122!3d27.3382!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39e6a5613d3b41d7%3A0x1baf2e6489a7e7e!2sGangtok%2C%20Sikkim!5e0!3m2!1sen!2sin!4v1640000000000"
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d65369183.36050215!2d1e-7!3d1e-7!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6a77eedaadbf5fe1%3A0xdf5107108943a317!2sThe%20Great%20Himalayan%20Escape!5e0!3m2!1sen!2sin!4v1772811573981!5m2!1sen!2sin"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -244,6 +245,8 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+      <NewsletterSection />
 
       {/* WhatsApp floating button */}
       <a

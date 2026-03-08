@@ -1,5 +1,6 @@
 import { Bell, Search, Menu, Sun, Moon } from "lucide-react";
 import { useGetUnreadNotificationsCountQuery } from "../../../store/api";
+import Link from "next/link";
 
 interface TopbarProps {
     onMenuClick: () => void;
@@ -40,14 +41,17 @@ export default function Topbar({ onMenuClick, isDarkMode, onToggleTheme }: Topba
                     {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
                 </button>
 
-                <button className="relative rounded-xl p-2.5 text-gray-500 dark:text-gray-400 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800">
+                <Link
+                    href="/admin/notifications"
+                    className="relative rounded-xl p-2.5 text-gray-500 dark:text-gray-400 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+                >
                     <Bell size={20} />
                     {unreadCount > 0 && (
                         <span className="absolute -right-1 -top-1 inline-flex min-h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#ff4106] px-1 text-[10px] font-bold text-white">
                             {unreadCount > 9 ? "9+" : unreadCount}
                         </span>
                     )}
-                </button>
+                </Link>
 
                 <div className="h-10 w-[1px] bg-gray-100 dark:bg-gray-800 mx-2" />
 

@@ -93,6 +93,7 @@ export interface Category {
   name: string;
   title?: string;
   image?: string;
+  images?: string[];
   createdAt?: string;
   updatedAt?: string;
 }
@@ -102,6 +103,7 @@ export interface Destination {
   name: string;
   details?: string;
   image?: string;
+  images?: string[];
   createdAt?: string;
   updatedAt?: string;
 }
@@ -111,12 +113,22 @@ export interface Package {
   name: string;
   title?: string;
   duration?: string;
+  durationDescription?: string;
   description?: string;
   image?: string;
-  termsConditions?: string;
-  paymentPolicy?: string;
+  images?: string[];
   categories?: Category[];
   destinations?: Destination[];
+  itineraryTemplate?: string;
+  inclusionExclusionSet?: string;
+  paymentRefundPolicyTemplate?: string;
+  termsConditionTemplate?: string;
+  // Extended when fetching single package (GET /packages/:id)
+  itinerary?: ItineraryItem[];
+  paymentRefundPolicy?: { content?: string };
+  inclusions?: InclusionExclusionItem[];
+  exclusions?: InclusionExclusionItem[];
+  termsCondition?: { content?: string };
   createdAt?: string;
   updatedAt?: string;
 }
@@ -125,10 +137,14 @@ export interface PackageCreateRequest {
   name: string;
   title?: string;
   duration?: string;
+  durationDescription?: string;
   description?: string;
   image?: string;
-  termsConditions?: string;
-  paymentPolicy?: string;
+  images?: string[];
+  itineraryTemplateId?: string;
+  inclusionExclusionSetId?: string;
+  paymentRefundPolicyTemplateId?: string;
+  termsConditionTemplateId?: string;
 }
 
 export interface PackageUpdateRequest extends Partial<PackageCreateRequest> {}
@@ -136,6 +152,60 @@ export interface PackageUpdateRequest extends Partial<PackageCreateRequest> {}
 export interface PackageAssignRequest {
   categoryIds?: string[];
   destinationIds?: string[];
+}
+
+// Itineraries
+export interface ItineraryItem {
+  _id: string;
+  dayNumber: number;
+  title: string;
+  description: string;
+}
+
+// Policies & Terms
+export interface PolicyResponse {
+  content: string;
+}
+
+// Inclusions & Exclusions
+export interface InclusionExclusionItem {
+  _id: string;
+  type: "inclusion" | "exclusion";
+  text: string;
+  order: number;
+}
+
+// Reusable templates (admin creates once, then selects when creating package)
+export interface ItineraryTemplate {
+  _id: string;
+  name: string;
+  days: { dayNumber: number; title: string; description?: string }[];
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface InclusionExclusionSet {
+  _id: string;
+  name: string;
+  items: InclusionExclusionItem[];
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface PaymentRefundPolicyTemplate {
+  _id: string;
+  name: string;
+  content: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface TermsConditionTemplate {
+  _id: string;
+  name: string;
+  content: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 // Upload
@@ -166,6 +236,10 @@ export const tgheApi = createApi({
     "Category",
     "Destination",
     "Package",
+    "ItineraryTemplate",
+    "InclusionExclusionSet",
+    "PaymentRefundPolicyTemplate",
+    "TermsConditionTemplate",
   ],
   endpoints: (builder) => ({
     // Health & Test
@@ -207,7 +281,7 @@ export const tgheApi = createApi({
     >({
       query: (params) => ({
         url: "/api/notifications",
-        params,
+        params: params || undefined,
       }),
       providesTags: ["Notification"],
     }),
@@ -409,7 +483,7 @@ export const tgheApi = createApi({
     >({
       query: (params) => ({
         url: "/api/packages",
-        params,
+        params: params || undefined,
       }),
       providesTags: ["Package"],
     }),
@@ -476,6 +550,160 @@ export const tgheApi = createApi({
       }),
       invalidatesTags: ["Package"],
     }),
+
+    // Itinerary templates (reusable; admin creates, then selects when creating package)
+    getItineraryTemplates: builder.query<ApiEnvelope<ItineraryTemplate[]>, void>({
+      query: () => "/api/itinerary-templates",
+      providesTags: ["ItineraryTemplate"],
+    }),
+    getItineraryTemplate: builder.query<ApiEnvelope<ItineraryTemplate>, string>({
+      query: (id) => `/api/itinerary-templates/${id}`,
+      providesTags: ["ItineraryTemplate"],
+    }),
+    createItineraryTemplate: builder.mutation<
+      ApiEnvelope<ItineraryTemplate>,
+      Partial<ItineraryTemplate>
+    >({
+      query: (body) => ({
+        url: "/api/itinerary-templates",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["ItineraryTemplate", "Package"],
+    }),
+    updateItineraryTemplate: builder.mutation<
+      ApiEnvelope<ItineraryTemplate>,
+      { id: string; body: Partial<ItineraryTemplate> }
+    >({
+      query: ({ id, body }) => ({
+        url: `/api/itinerary-templates/${id}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["ItineraryTemplate", "Package"],
+    }),
+    deleteItineraryTemplate: builder.mutation<ApiEnvelope<unknown>, string>({
+      query: (id) => ({
+        url: `/api/itinerary-templates/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["ItineraryTemplate", "Package"],
+    }),
+
+    // Inclusion/Exclusion sets
+    getInclusionExclusionSets: builder.query<ApiEnvelope<InclusionExclusionSet[]>, void>({
+      query: () => "/api/inclusion-exclusion-sets",
+      providesTags: ["InclusionExclusionSet"],
+    }),
+    getInclusionExclusionSet: builder.query<ApiEnvelope<InclusionExclusionSet>, string>({
+      query: (id) => `/api/inclusion-exclusion-sets/${id}`,
+      providesTags: ["InclusionExclusionSet"],
+    }),
+    createInclusionExclusionSet: builder.mutation<
+      ApiEnvelope<InclusionExclusionSet>,
+      Partial<InclusionExclusionSet>
+    >({
+      query: (body) => ({
+        url: "/api/inclusion-exclusion-sets",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["InclusionExclusionSet", "Package"],
+    }),
+    updateInclusionExclusionSet: builder.mutation<
+      ApiEnvelope<InclusionExclusionSet>,
+      { id: string; body: Partial<InclusionExclusionSet> }
+    >({
+      query: ({ id, body }) => ({
+        url: `/api/inclusion-exclusion-sets/${id}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["InclusionExclusionSet", "Package"],
+    }),
+    deleteInclusionExclusionSet: builder.mutation<ApiEnvelope<unknown>, string>({
+      query: (id) => ({
+        url: `/api/inclusion-exclusion-sets/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["InclusionExclusionSet", "Package"],
+    }),
+
+    // Payment/Refund policy templates
+    getPaymentRefundPolicyTemplates: builder.query<
+      ApiEnvelope<PaymentRefundPolicyTemplate[]>,
+      void
+    >({
+      query: () => "/api/payment-policies",
+      providesTags: ["PaymentRefundPolicyTemplate"],
+    }),
+    createPaymentRefundPolicyTemplate: builder.mutation<
+      ApiEnvelope<PaymentRefundPolicyTemplate>,
+      Partial<PaymentRefundPolicyTemplate>
+    >({
+      query: (body) => ({
+        url: "/api/payment-policies",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["PaymentRefundPolicyTemplate", "Package"],
+    }),
+    updatePaymentRefundPolicyTemplate: builder.mutation<
+      ApiEnvelope<PaymentRefundPolicyTemplate>,
+      { id: string; body: Partial<PaymentRefundPolicyTemplate> }
+    >({
+      query: ({ id, body }) => ({
+        url: `/api/payment-policies/${id}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["PaymentRefundPolicyTemplate", "Package"],
+    }),
+    deletePaymentRefundPolicyTemplate: builder.mutation<ApiEnvelope<unknown>, string>({
+      query: (id) => ({
+        url: `/api/payment-policies/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["PaymentRefundPolicyTemplate", "Package"],
+    }),
+
+    // Terms & Conditions templates
+    getTermsConditionTemplates: builder.query<
+      ApiEnvelope<TermsConditionTemplate[]>,
+      void
+    >({
+      query: () => "/api/terms-conditions",
+      providesTags: ["TermsConditionTemplate"],
+    }),
+    createTermsConditionTemplate: builder.mutation<
+      ApiEnvelope<TermsConditionTemplate>,
+      Partial<TermsConditionTemplate>
+    >({
+      query: (body) => ({
+        url: "/api/terms-conditions",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["TermsConditionTemplate", "Package"],
+    }),
+    updateTermsConditionTemplate: builder.mutation<
+      ApiEnvelope<TermsConditionTemplate>,
+      { id: string; body: Partial<TermsConditionTemplate> }
+    >({
+      query: ({ id, body }) => ({
+        url: `/api/terms-conditions/${id}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["TermsConditionTemplate", "Package"],
+    }),
+    deleteTermsConditionTemplate: builder.mutation<ApiEnvelope<unknown>, string>({
+      query: (id) => ({
+        url: `/api/terms-conditions/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["TermsConditionTemplate", "Package"],
+    }),
   }),
 });
 
@@ -518,5 +746,24 @@ export const {
   useUpdatePackageFormMutation,
   useAssignPackageCategoriesDestinationsMutation,
   useDeletePackageMutation,
+
+  useGetItineraryTemplatesQuery,
+  useGetItineraryTemplateQuery,
+  useCreateItineraryTemplateMutation,
+  useUpdateItineraryTemplateMutation,
+  useDeleteItineraryTemplateMutation,
+  useGetInclusionExclusionSetsQuery,
+  useGetInclusionExclusionSetQuery,
+  useCreateInclusionExclusionSetMutation,
+  useUpdateInclusionExclusionSetMutation,
+  useDeleteInclusionExclusionSetMutation,
+  useGetPaymentRefundPolicyTemplatesQuery,
+  useCreatePaymentRefundPolicyTemplateMutation,
+  useUpdatePaymentRefundPolicyTemplateMutation,
+  useDeletePaymentRefundPolicyTemplateMutation,
+  useGetTermsConditionTemplatesQuery,
+  useCreateTermsConditionTemplateMutation,
+  useUpdateTermsConditionTemplateMutation,
+  useDeleteTermsConditionTemplateMutation,
 } = tgheApi;
 

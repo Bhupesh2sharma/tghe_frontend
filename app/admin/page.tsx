@@ -62,13 +62,13 @@ export default function AdminDashboard() {
         <div className="space-y-8">
             {/* Welcome Header */}
             <div>
-                <h1 className="text-3xl font-black text-gray-900 dark:text-white">Welcome back, Bhupes!</h1>
+                <h1 className="text-3xl font-black text-gray-900 dark:text-white">Welcome back, Admin!</h1>
                 <p className="mt-1 text-gray-500 dark:text-gray-400">Here's what happening with TGHE today.</p>
             </div>
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {(analyticsLoading ? Array.from({ length: 3 }) : stats).map((stat, index) => (
+                {(analyticsLoading ? (Array.from({ length: 6 }).map(() => null) as null[]) : stats).map((stat, index) => (
                     <div
                         key={stat ? stat.label : index}
                         className="group rounded-2xl bg-white dark:bg-gray-800 p-6 shadow-sm ring-1 ring-gray-100 dark:ring-gray-700 transition-all hover:shadow-md"

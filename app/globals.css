@@ -3,13 +3,13 @@
 @variant dark (&:where(.dark, .dark *));
 
 html {
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 body {
   margin: 0;
   background-color: #ff4106;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   -webkit-tap-highlight-color: transparent;
   font-family: var(--font-lexend-deca), system-ui, -apple-system,
     BlinkMacSystemFont, "Segoe UI", sans-serif;

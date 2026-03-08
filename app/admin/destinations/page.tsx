@@ -19,11 +19,13 @@ export default function AdminDestinationsPage() {
 
   const destinations = data?.data ?? [];
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const imagesInputRef = useRef<HTMLInputElement>(null);
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [details, setDetails] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -44,8 +46,10 @@ export default function AdminDestinationsPage() {
     setName(destination.name ?? "");
     setDetails(destination.details ?? "");
     setImageFile(null);
+    setImageFiles([]);
     setImagePreviewUrl(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
+    if (imagesInputRef.current) imagesInputRef.current.value = "";
     setError(null);
   };
 
@@ -54,8 +58,10 @@ export default function AdminDestinationsPage() {
     setName("");
     setDetails("");
     setImageFile(null);
+    setImageFiles([]);
     setImagePreviewUrl(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
+    if (imagesInputRef.current) imagesInputRef.current.value = "";
     setError(null);
   };
 
@@ -72,6 +78,7 @@ export default function AdminDestinationsPage() {
     formData.append("name", name.trim());
     if (details.trim()) formData.append("details", details.trim());
     if (imageFile) formData.append("image", imageFile);
+    imageFiles.forEach((f) => formData.append("images", f));
 
     try {
       if (editingId) {
@@ -150,7 +157,7 @@ export default function AdminDestinationsPage() {
 
             <div className="space-y-1.5">
               <label className="block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                Image
+                Main Image
               </label>
               <input
                 ref={fileInputRef}
@@ -160,9 +167,7 @@ export default function AdminDestinationsPage() {
                 className="block w-full text-xs text-gray-600 dark:text-gray-300 file:mr-3 file:rounded-lg file:border-0 file:bg-gray-100 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-gray-700 hover:file:bg-gray-200 dark:file:bg-gray-700 dark:file:text-gray-100"
               />
               <p className="mt-1 text-[11px] text-gray-400">
-                {editingId
-                  ? "Choose a new image to replace the current one, or leave empty to keep it."
-                  : "Choose an image (optional). JPEG, PNG, GIF, WebP; max 5MB."}
+                One image (optional). JPEG, PNG, GIF, WebP; max 5MB.
               </p>
               {(imagePreviewUrl || (editingId && destinations.find((d) => d._id === editingId)?.image)) && (
                 <div className="mt-2 relative w-24 h-24 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
@@ -173,9 +178,25 @@ export default function AdminDestinationsPage() {
                   />
                 </div>
               )}
-              {imageFile && !imagePreviewUrl && (
+            </div>
+            <div className="space-y-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                Gallery Images (min 6 recommended)
+              </label>
+              <input
+                ref={imagesInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(e) => setImageFiles(Array.from(e.target.files ?? []))}
+                className="block w-full text-xs text-gray-600 dark:text-gray-300 file:mr-3 file:rounded-lg file:border-0 file:bg-gray-100 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-gray-700 hover:file:bg-gray-200 dark:file:bg-gray-700 dark:file:text-gray-100"
+              />
+              <p className="mt-1 text-[11px] text-gray-400">
+                Up to 20 images.
+              </p>
+              {imageFiles.length > 0 && (
                 <p className="text-xs text-[#00843d] dark:text-green-400">
-                  Selected: {imageFile.name}
+                  {imageFiles.length} file(s) selected
                 </p>
               )}
             </div>

@@ -1,5 +1,6 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import LoaderWrapper from "../components/LoaderWrapper";
 
 export default function MarketingLayout({
     children,
@@ -8,6 +9,7 @@ export default function MarketingLayout({
 }) {
     return (
         <>
+            <LoaderWrapper />
             <Header />
             {children}
             <Footer />

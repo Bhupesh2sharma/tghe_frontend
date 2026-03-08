@@ -9,6 +9,10 @@ import {
   useDeletePackageMutation,
   useGetCategoriesQuery,
   useGetDestinationsQuery,
+  useGetItineraryTemplatesQuery,
+  useGetInclusionExclusionSetsQuery,
+  useGetPaymentRefundPolicyTemplatesQuery,
+  useGetTermsConditionTemplatesQuery,
 } from "../../../store/api";
 
 export default function AdminPackagesPage() {
@@ -16,31 +20,41 @@ export default function AdminPackagesPage() {
     useGetPackagesQuery();
   const { data: categoriesResponse } = useGetCategoriesQuery();
   const { data: destinationsResponse } = useGetDestinationsQuery();
+  const { data: itineraryTemplatesResponse } = useGetItineraryTemplatesQuery();
+  const { data: inclusionExclusionSetsResponse } = useGetInclusionExclusionSetsQuery();
+  const { data: paymentPoliciesResponse } = useGetPaymentRefundPolicyTemplatesQuery();
+  const { data: termsTemplatesResponse } = useGetTermsConditionTemplatesQuery();
 
-  const [createPackage, { isLoading: isCreating }] =
-    useCreatePackageFormMutation();
-  const [updatePackage, { isLoading: isUpdating }] =
-    useUpdatePackageFormMutation();
-  const [assignPackageRelations, { isLoading: isAssigning }] =
-    useAssignPackageCategoriesDestinationsMutation();
-  const [deletePackage, { isLoading: isDeleting }] =
-    useDeletePackageMutation();
+  const [createPackage, { isLoading: isCreating }] = useCreatePackageFormMutation();
+  const [updatePackage, { isLoading: isUpdating }] = useUpdatePackageFormMutation();
+  const [assignPackageRelations, { isLoading: isAssigning }] = useAssignPackageCategoriesDestinationsMutation();
+  const [deletePackage, { isLoading: isDeleting }] = useDeletePackageMutation();
 
   const packages = packagesResponse?.data ?? [];
   const categories = categoriesResponse?.data ?? [];
   const destinations = destinationsResponse?.data ?? [];
+  const itineraryTemplates = itineraryTemplatesResponse?.data ?? [];
+  const inclusionExclusionSets = inclusionExclusionSetsResponse?.data ?? [];
+  const paymentPolicies = paymentPoliciesResponse?.data ?? [];
+  const termsTemplates = termsTemplatesResponse?.data ?? [];
+
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const imagesInputRef = useRef<HTMLInputElement>(null);
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [title, setTitle] = useState("");
   const [duration, setDuration] = useState("");
+  const [durationDescription, setDurationDescription] = useState("");
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [termsConditions, setTermsConditions] = useState("");
-  const [paymentPolicy, setPaymentPolicy] = useState("");
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
   const [selectedDestinationIds, setSelectedDestinationIds] = useState<string[]>([]);
+  const [selectedItineraryTemplateId, setSelectedItineraryTemplateId] = useState("");
+  const [selectedInclusionExclusionSetId, setSelectedInclusionExclusionSetId] = useState("");
+  const [selectedPaymentPolicyId, setSelectedPaymentPolicyId] = useState("");
+  const [selectedTermsId, setSelectedTermsId] = useState("");
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -64,14 +78,19 @@ export default function AdminPackagesPage() {
     setName("");
     setTitle("");
     setDuration("");
+    setDurationDescription("");
     setDescription("");
     setImageFile(null);
+    setImageFiles([]);
     setImagePreviewUrl(null);
-    setTermsConditions("");
-    setPaymentPolicy("");
     setSelectedCategoryIds([]);
     setSelectedDestinationIds([]);
+    setSelectedItineraryTemplateId("");
+    setSelectedInclusionExclusionSetId("");
+    setSelectedPaymentPolicyId("");
+    setSelectedTermsId("");
     if (fileInputRef.current) fileInputRef.current.value = "";
+    if (imagesInputRef.current) imagesInputRef.current.value = "";
     setError(null);
   };
 
@@ -82,14 +101,23 @@ export default function AdminPackagesPage() {
     setName(pkg.name ?? "");
     setTitle(pkg.title ?? "");
     setDuration(pkg.duration ?? "");
+    setDurationDescription(pkg.durationDescription ?? "");
     setDescription(pkg.description ?? "");
     setImageFile(null);
+    setImageFiles([]);
     setImagePreviewUrl(null);
-    setTermsConditions(pkg.termsConditions ?? "");
-    setPaymentPolicy(pkg.paymentPolicy ?? "");
     setSelectedCategoryIds(pkg.categories?.map((c) => c._id) ?? []);
     setSelectedDestinationIds(pkg.destinations?.map((d) => d._id) ?? []);
+    const itId = typeof pkg.itineraryTemplate === "string" ? pkg.itineraryTemplate : (pkg.itineraryTemplate as { _id?: string })?._id ?? "";
+    const ieId = typeof pkg.inclusionExclusionSet === "string" ? pkg.inclusionExclusionSet : (pkg.inclusionExclusionSet as { _id?: string })?._id ?? "";
+    const ppId = typeof pkg.paymentRefundPolicyTemplate === "string" ? pkg.paymentRefundPolicyTemplate : (pkg.paymentRefundPolicyTemplate as { _id?: string })?._id ?? "";
+    const tcId = typeof pkg.termsConditionTemplate === "string" ? pkg.termsConditionTemplate : (pkg.termsConditionTemplate as { _id?: string })?._id ?? "";
+    setSelectedItineraryTemplateId(itId);
+    setSelectedInclusionExclusionSetId(ieId);
+    setSelectedPaymentPolicyId(ppId);
+    setSelectedTermsId(tcId);
     if (fileInputRef.current) fileInputRef.current.value = "";
+    if (imagesInputRef.current) imagesInputRef.current.value = "";
     setError(null);
   };
 
@@ -106,10 +134,14 @@ export default function AdminPackagesPage() {
     formData.append("name", name.trim());
     if (title.trim()) formData.append("title", title.trim());
     if (duration.trim()) formData.append("duration", duration.trim());
+    if (durationDescription.trim()) formData.append("durationDescription", durationDescription.trim());
     if (description.trim()) formData.append("description", description.trim());
-    if (termsConditions.trim()) formData.append("termsConditions", termsConditions.trim());
-    if (paymentPolicy.trim()) formData.append("paymentPolicy", paymentPolicy.trim());
     if (imageFile) formData.append("image", imageFile);
+    imageFiles.forEach((f) => formData.append("images", f));
+    formData.append("itineraryTemplateId", selectedItineraryTemplateId);
+    formData.append("inclusionExclusionSetId", selectedInclusionExclusionSetId);
+    formData.append("paymentRefundPolicyTemplateId", selectedPaymentPolicyId);
+    formData.append("termsConditionTemplateId", selectedTermsId);
 
     try {
       if (editingId) {
@@ -189,6 +221,9 @@ export default function AdminPackagesPage() {
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           Manage tour packages and link them with categories and destinations.
         </p>
+        <p className="mt-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+          Create <strong>Itinerary templates</strong>, <strong>Inclusion/Exclusion sets</strong>, <strong>Payment policies</strong>, and <strong>Terms &amp; Conditions</strong> from the sidebar first. When creating or editing a package, select one of each from the dropdowns in the form.
+        </p>
       </div>
 
       <div className="grid gap-8 2xl:grid-cols-3">
@@ -238,6 +273,19 @@ export default function AdminPackagesPage() {
 
               <div className="space-y-1.5">
                 <label className="block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                  Duration description
+                </label>
+                <input
+                  type="text"
+                  value={durationDescription}
+                  onChange={(e) => setDurationDescription(e.target.value)}
+                  placeholder="e.g. Gangtok 4N + Lachung 1N"
+                  className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2.5 text-sm text-gray-900 dark:text-gray-100 outline-none focus:border-[#ff4106] focus:ring-1 focus:ring-[#ff4106]"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
                   Description
                 </label>
                 <textarea
@@ -250,7 +298,7 @@ export default function AdminPackagesPage() {
 
               <div className="space-y-1.5">
                 <label className="block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                  Image
+                  Main Image
                 </label>
                 <input
                   ref={fileInputRef}
@@ -260,9 +308,7 @@ export default function AdminPackagesPage() {
                   className="block w-full text-xs text-gray-600 dark:text-gray-300 file:mr-3 file:rounded-lg file:border-0 file:bg-gray-100 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-gray-700 hover:file:bg-gray-200 dark:file:bg-gray-700 dark:file:text-gray-100"
                 />
                 <p className="mt-1 text-[11px] text-gray-400">
-                  {editingId
-                    ? "Choose a new image to replace, or leave empty to keep current."
-                    : "Choose an image (optional). JPEG, PNG, GIF, WebP; max 5MB."}
+                  One image (optional). JPEG, PNG, GIF, WebP; max 5MB.
                 </p>
                 {(imagePreviewUrl || (editingId && currentEditingPackage?.image)) && (
                   <div className="mt-2 relative w-24 h-24 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
@@ -273,35 +319,98 @@ export default function AdminPackagesPage() {
                     />
                   </div>
                 )}
-                {imageFile && !imagePreviewUrl && (
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                  Gallery Images (min 6 recommended)
+                </label>
+                <input
+                  ref={imagesInputRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={(e) => setImageFiles(Array.from(e.target.files ?? []))}
+                  className="block w-full text-xs text-gray-600 dark:text-gray-300 file:mr-3 file:rounded-lg file:border-0 file:bg-gray-100 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-gray-700 hover:file:bg-gray-200 dark:file:bg-gray-700 dark:file:text-gray-100"
+                />
+                <p className="mt-1 text-[11px] text-gray-400">
+                  Up to 20 images. Shown on experience detail page.
+                </p>
+                {editingId && currentEditingPackage?.images?.length ? (
+                  <div className="mt-2 flex flex-wrap gap-1">
+                    {currentEditingPackage.images.slice(0, 6).map((url, i) => (
+                      <div key={i} className="w-12 h-12 rounded overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
+                        <img src={url} alt="" className="w-full h-full object-cover" />
+                      </div>
+                    ))}
+                    {currentEditingPackage.images.length > 6 && (
+                      <span className="text-[11px] text-gray-500">+{currentEditingPackage.images.length - 6} more</span>
+                    )}
+                  </div>
+                ) : null}
+                {imageFiles.length > 0 && (
                   <p className="text-xs text-[#00843d] dark:text-green-400">
-                    Selected: {imageFile.name}
+                    {imageFiles.length} new file(s) selected
                   </p>
                 )}
               </div>
 
-              <div className="space-y-1.5">
-                <label className="block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                  Terms &amp; Conditions
-                </label>
-                <textarea
-                  value={termsConditions}
-                  onChange={(e) => setTermsConditions(e.target.value)}
-                  rows={3}
-                  className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2.5 text-sm text-gray-900 dark:text-gray-100 outline-none focus:border-[#ff4106] focus:ring-1 focus:ring-[#ff4106] resize-none"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                  Payment Policy
-                </label>
-                <textarea
-                  value={paymentPolicy}
-                  onChange={(e) => setPaymentPolicy(e.target.value)}
-                  rows={3}
-                  className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2.5 text-sm text-gray-900 dark:text-gray-100 outline-none focus:border-[#ff4106] focus:ring-1 focus:ring-[#ff4106] resize-none"
-                />
+              <div className="space-y-3 pt-2 border-t border-gray-100 dark:border-gray-700">
+                <p className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                  Select templates (create from sidebar first)
+                </p>
+                <div className="space-y-2">
+                  <label className="block text-[11px] font-semibold text-gray-500 dark:text-gray-400">Itinerary template</label>
+                  <select
+                    value={selectedItineraryTemplateId}
+                    onChange={(e) => setSelectedItineraryTemplateId(e.target.value)}
+                    className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm"
+                  >
+                    <option value="">— None —</option>
+                    {itineraryTemplates.map((t) => (
+                      <option key={t._id} value={t._id}>{t.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-[11px] font-semibold text-gray-500 dark:text-gray-400">Inclusion / Exclusion set</label>
+                  <select
+                    value={selectedInclusionExclusionSetId}
+                    onChange={(e) => setSelectedInclusionExclusionSetId(e.target.value)}
+                    className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm"
+                  >
+                    <option value="">— None —</option>
+                    {inclusionExclusionSets.map((s) => (
+                      <option key={s._id} value={s._id}>{s.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-[11px] font-semibold text-gray-500 dark:text-gray-400">Payment & Refund policy</label>
+                  <select
+                    value={selectedPaymentPolicyId}
+                    onChange={(e) => setSelectedPaymentPolicyId(e.target.value)}
+                    className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm"
+                  >
+                    <option value="">— None —</option>
+                    {paymentPolicies.map((p) => (
+                      <option key={p._id} value={p._id}>{p.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-[11px] font-semibold text-gray-500 dark:text-gray-400">Terms & Conditions</label>
+                  <select
+                    value={selectedTermsId}
+                    onChange={(e) => setSelectedTermsId(e.target.value)}
+                    className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm"
+                  >
+                    <option value="">— None —</option>
+                    {termsTemplates.map((t) => (
+                      <option key={t._id} value={t._id}>{t.name}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
               {error && (
@@ -342,14 +451,19 @@ export default function AdminPackagesPage() {
               Link Categories &amp; Destinations
             </h2>
             <p className="mb-3 text-xs text-gray-500 dark:text-gray-400">
-              Select a package from the list, then choose related categories and
-              destinations.
+              Select a package from the table (click <strong>Edit</strong>), then choose related categories and
+              destinations. In the form above, select an <strong>Itinerary template</strong>, <strong>Inclusion/Exclusion set</strong>, <strong>Payment policy</strong>, and <strong>Terms</strong> (create those from the sidebar first).
             </p>
 
             {!currentEditingPackage ? (
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                Select a package from the table to assign relations.
-              </p>
+              <div className="rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-900/50 p-4 text-center">
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  No package selected
+                </p>
+                <p className="mt-1 text-xs text-gray-500 dark:text-gray-500">
+                  Click <strong>Edit</strong> on a package in the table on the right to assign categories, destinations, and template (itinerary, inclusions, policy, terms).
+                </p>
+              </div>
             ) : (
               <>
                 <p className="mb-4 text-sm font-semibold text-gray-900 dark:text-white">
@@ -427,6 +541,7 @@ export default function AdminPackagesPage() {
               </>
             )}
           </div>
+
         </div>
 
         <div className="rounded-2xl bg-white dark:bg-gray-800 p-6 shadow-sm ring-1 ring-gray-100 dark:ring-gray-700 2xl:col-span-2">
@@ -516,6 +631,9 @@ export default function AdminPackagesPage() {
                       </td>
                       <td className="py-3 pr-3 text-sm text-gray-600 dark:text-gray-400">
                         {pkg.duration ?? "-"}
+                        {pkg.durationDescription ? (
+                          <span className="block text-xs text-gray-500 dark:text-gray-500 mt-0.5">{pkg.durationDescription}</span>
+                        ) : null}
                       </td>
                       <td className="py-3 pr-3 text-xs text-gray-600 dark:text-gray-400">
                         {pkg.categories && pkg.categories.length > 0

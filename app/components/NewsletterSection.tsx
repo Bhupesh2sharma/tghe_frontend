@@ -1,36 +1,63 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { useSubscribeNewsletterMutation } from "../../store/api";
+import FormStatusOverlay from "./FormStatusOverlay";
+
+const fadeInVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8 }
+  }
+};
 
 export default function NewsletterSection() {
   const [email, setEmail] = useState("");
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [showStatus, setShowStatus] = useState(false);
+  const [statusType, setStatusType] = useState<"success" | "error" | null>(null);
   const [subscribe, { isLoading }] = useSubscribeNewsletterMutation();
 
   return (
-    <section className="w-full bg-[#ff4106] px-4 py-12 sm:px-6 sm:py-14 md:px-12 md:py-16 lg:px-20">
-      <div className="mx-auto flex max-w-5xl flex-col items-center gap-8 md:flex-row md:justify-between md:gap-10">
-        <div className="text-center md:text-left">
-          <p className="text-sm font-medium text-white/90 sm:text-base">
+    <section className="w-full bg-[#ff4106] px-4 pb-6 pt-4 sm:px-6 sm:pb-8 sm:pt-6 md:px-12 md:pb-8 md:pt-6 lg:px-20">
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ staggerChildren: 0.2 }}
+        className="mx-auto flex max-w-6xl flex-col items-center gap-8 md:flex-row md:justify-between md:gap-10"
+      >
+        <motion.div variants={fadeInVariants} className="text-center md:text-left">
+          <p
+            className="font-medium text-[16px] leading-[19px] text-white/90"
+            style={{ fontFamily: "'Lexend Deca', sans-serif" }}
+          >
             Get the latest news and offers
           </p>
-          <h2 className="mt-1 text-2xl font-bold text-white sm:text-3xl md:mt-2">
+          <h2
+            className="mt-1 font-medium text-[30px] leading-[40px] text-white md:mt-2"
+            style={{ fontFamily: "'Lexend Deca', sans-serif" }}
+          >
             Subscribe to our newsletter
           </h2>
-        </div>
+        </motion.div>
 
-        <form
+        <motion.form
+          variants={fadeInVariants}
           className="flex w-full max-w-md overflow-hidden rounded-full shadow-md sm:max-w-lg"
           onSubmit={async (e) => {
             e.preventDefault();
-            setSuccessMessage(null);
-            setErrorMessage(null);
             try {
               if (!email) return;
               const result = await subscribe({ email }).unwrap();
-              setSuccessMessage(`Subscribed with ${result.data.email}`);
+              const msg = `Subscribed with ${result.data.email}`;
+              setSuccessMessage(msg);
+              setStatusType("success");
+              setShowStatus(true);
               setEmail("");
             } catch (err: any) {
               const msg =
@@ -38,6 +65,8 @@ export default function NewsletterSection() {
                 err?.error ||
                 "Unable to subscribe. Please try again.";
               setErrorMessage(msg);
+              setStatusType("error");
+              setShowStatus(true);
             }
           }}
         >
@@ -57,19 +86,15 @@ export default function NewsletterSection() {
           >
             {isLoading ? "Submitting..." : "Submit"}
           </button>
-        </form>
+        </motion.form>
 
-        {successMessage && (
-          <p className="mt-3 text-sm font-medium text-white/90">
-            {successMessage}
-          </p>
-        )}
-        {errorMessage && (
-          <p className="mt-3 text-sm font-medium text-yellow-100">
-            {errorMessage}
-          </p>
-        )}
-      </div>
+        <FormStatusOverlay
+          isOpen={showStatus}
+          onClose={() => setShowStatus(false)}
+          type={statusType}
+          message={statusType === "success" ? successMessage : errorMessage}
+        />
+      </motion.div>
     </section>
   );
 }

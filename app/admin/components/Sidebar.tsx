@@ -14,7 +14,11 @@ import {
     Settings,
     X,
     ChevronRight,
-    LogOut
+    LogOut,
+    Route,
+    ListChecks,
+    FileText,
+    ScrollText
 } from "lucide-react";
 
 const menuItems = [
@@ -23,6 +27,10 @@ const menuItems = [
     { icon: Map, label: "Categories", href: "/admin/categories" },
     { icon: MapPin, label: "Destinations", href: "/admin/destinations" },
     { icon: CalendarDays, label: "Packages", href: "/admin/packages" },
+    { icon: Route, label: "Itinerary templates", href: "/admin/itinerary-templates" },
+    { icon: ListChecks, label: "Inclusion/Exclusion sets", href: "/admin/inclusion-exclusion-sets" },
+    { icon: FileText, label: "Payment policies", href: "/admin/payment-policies" },
+    { icon: ScrollText, label: "Terms & conditions", href: "/admin/terms-conditions" },
     { icon: Inbox, label: "Enquiries", href: "/admin/enquiries" },
     { icon: Inbox, label: "Contacts", href: "/admin/contacts" },
     { icon: Inbox, label: "Newsletter", href: "/admin/newsletter" },
@@ -135,7 +143,7 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onCollapse }: Si
                     <div className={`border-t border-gray-100 dark:border-gray-800 p-6 transition-all duration-300 ${isCollapsed ? "p-4 flex flex-col items-center gap-2" : "space-y-3"}`}>
                         <div className="flex items-center gap-3">
                             <div className="h-10 w-10 shrink-0 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-[#ff4106] font-bold">
-                                B
+                                A
                             </div>
                             {!isCollapsed && (
                                 <div className="flex flex-col min-w-0">

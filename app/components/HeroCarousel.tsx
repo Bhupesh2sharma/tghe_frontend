@@ -4,17 +4,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
+// Images from public/img – add or reorder as needed
 const images = [
-    { id: 1, src: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1200", title: "KALIMPONG", subtitle: "Haven of Art & Culture" },
-    { id: 2, src: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&q=80&w=1200", title: "DARJEELING", subtitle: "Queen of the Hills" },
-    { id: 3, src: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=1200", title: "GANGTOK", subtitle: "Gateway to Sikkim" },
-    { id: 4, src: "https://images.unsplash.com/photo-1433838552652-f9a46b332c40?auto=format&fit=crop&q=80&w=1200", title: "PELLING", subtitle: "Mist-covered Peaks" },
-    { id: 5, src: "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&q=80&w=1200", title: "NAMCHI", subtitle: "Sky High Spiritualism" },
-    { id: 6, src: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=1200", title: "LACHUNG", subtitle: "Valley of Flowers" },
-    { id: 7, src: "https://images.unsplash.com/photo-1493246507139-91e8bef99c02?auto=format&fit=crop&q=80&w=1200", title: "KURSEONG", subtitle: "Tea Estates & Tranquility" },
-    { id: 8, src: "https://images.unsplash.com/photo-1589136142550-c2d438e76a6d?auto=format&fit=crop&q=80&w=1200", title: "RAVANGLA", subtitle: "Buddha Park & Beyond" },
-    { id: 9, src: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1200", title: "TSONGO", subtitle: "Sacred Glacial Lake" },
-    { id: 10, src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=1200", title: "YUMTHANG", subtitle: "Alpine Flower Valley" },
+    { id: 1, src: "/img/bliss1.jpg", title: "KALIMPONG", subtitle: "Haven of Art & Culture" },
+    { id: 2, src: "/img/bliss2.jpg", title: "DARJEELING", subtitle: "Queen of the Hills" },
+    { id: 3, src: "/img/1747135750.mg%20marg%20(2).jpg", title: "GANGTOK", subtitle: "Gateway to Sikkim" },
+    { id: 4, src: "/img/escade1.jpg", title: "PELLING", subtitle: "Mist-covered Peaks" },
+    { id: 5, src: "/img/1747116035.buddha%20park%202.jpg", title: "NAMCHI", subtitle: "Sky High Spiritualism" },
+    { id: 6, src: "/img/bliss3.jpg", title: "LACHUNG", subtitle: "Valley of Flowers" },
+    { id: 7, src: "/img/escade2.jpg", title: "KURSEONG", subtitle: "Tea Estates & Tranquility" },
+    { id: 8, src: "/img/destination1.jpg", title: "RAVANGLA", subtitle: "Buddha Park & Beyond" },
+    { id: 9, src: "/img/himalyandelight1.jpg", title: "TSONGO", subtitle: "Sacred Glacial Lake" },
+    { id: 10, src: "/img/bliss4.jpg", title: "YUMTHANG", subtitle: "Alpine Flower Valley" },
 ];
 
 export default function HeroCarousel() {
@@ -97,7 +98,6 @@ export default function HeroCarousel() {
                                         fill
                                         className="object-cover"
                                         priority={isActive}
-                                        unoptimized
                                         sizes="(max-width: 768px) 300px, 320px"
                                     />
 
