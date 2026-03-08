@@ -142,7 +142,15 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
   if (isLoading) {
     return (
       <main className="min-h-screen bg-[#ff4106] flex items-center justify-center">
-        <p className="text-xl font-medium text-white/80 animate-pulse">Loading experience details...</p>
+        <div className="relative h-32 w-32">
+          <Image
+            src="/Final_Loader.gif"
+            alt="Loading..."
+            fill
+            className="object-contain"
+            priority
+          />
+        </div>
       </main>
     );
   }

@@ -43,12 +43,14 @@ export default function HeroCarousel() {
         if (diff > total / 2) diff -= total;
 
         const isActive = diff === 0;
-        const isVisible = Math.abs(diff) <= 4; // Increased visibility range for more cards
+        const isVisible = isMobile ? isActive : Math.abs(diff) <= 4; // Only active card on mobile, stack visibility on desktop
 
         if (!isVisible) return { opacity: 0, scale: 0.5, x: diff * 400, rotateY: 0, zIndex: 0 };
 
-        // Slightly increased xBase for a "small distance" between cards
-        const xBase = diff * (isMobile ? 100 : 280);
+        // Create a base x position with an additional gap to separate the middle three cards
+        let xBase = diff * (isMobile ? 100 : 280);
+        if (diff > 0) xBase += (isMobile ? 25 : 55);
+        if (diff < 0) xBase -= (isMobile ? 25 : 55);
 
         return {
             zIndex: 10 - Math.abs(diff),
@@ -85,7 +87,7 @@ export default function HeroCarousel() {
                                     stiffness: 120,
                                     damping: 18,
                                 }}
-                                className="absolute h-[480px] w-[250px] cursor-pointer overflow-hidden rounded-[24px] shadow-none md:h-[580px] md:w-[280px] md:shadow-2xl"
+                                className="absolute h-[480px] w-[310px] cursor-pointer overflow-hidden rounded-[24px] shadow-none md:h-[580px] md:w-[280px] md:shadow-2xl"
                                 onClick={() => setCurrentIndex(index)}
                                 style={{
                                     transformStyle: "preserve-3d",
@@ -98,7 +100,7 @@ export default function HeroCarousel() {
                                         fill
                                         className="object-cover"
                                         priority={isActive}
-                                        sizes="(max-width: 768px) 250px, 280px"
+                                        sizes="(max-width: 768px) 310px, 280px"
                                     />
 
                                     {!isActive && (
