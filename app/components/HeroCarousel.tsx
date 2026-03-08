@@ -49,8 +49,8 @@ export default function HeroCarousel() {
 
         // Create a base x position with an additional gap to separate the middle three cards
         let xBase = diff * (isMobile ? 100 : 280);
-        if (diff > 0) xBase += (isMobile ? 25 : 55);
-        if (diff < 0) xBase -= (isMobile ? 25 : 55);
+        if (diff > 0) xBase += (isMobile ? 25 : 10);
+        if (diff < 0) xBase -= (isMobile ? 25 : 10);
 
         return {
             zIndex: 10 - Math.abs(diff),
