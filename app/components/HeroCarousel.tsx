@@ -48,7 +48,7 @@ export default function HeroCarousel() {
         if (!isVisible) return { opacity: 0, scale: 0.5, x: diff * 400, rotateY: 0, zIndex: 0 };
 
         // Slightly increased xBase for a "small distance" between cards
-        const xBase = diff * (isMobile ? 120 : 330);
+        const xBase = diff * (isMobile ? 100 : 280);
 
         return {
             zIndex: 10 - Math.abs(diff),
@@ -61,7 +61,7 @@ export default function HeroCarousel() {
     };
 
     return (
-        <div className="relative flex h-[580px] w-full items-center justify-center overflow-hidden pt-2 pb-0 md:h-[680px]">
+        <div className="relative flex h-[480px] w-full items-center justify-center overflow-hidden pt-2 pb-0 md:h-[580px]">
             {/* 3D Stack Layer */}
             <div
                 className="relative flex h-full w-full items-center justify-center"
@@ -85,7 +85,7 @@ export default function HeroCarousel() {
                                     stiffness: 120,
                                     damping: 18,
                                 }}
-                                className="absolute h-[500px] w-[300px] cursor-pointer overflow-hidden rounded-[24px] shadow-none md:h-[550px] md:w-[320px] md:shadow-2xl"
+                                className="absolute h-[400px] w-[250px] cursor-pointer overflow-hidden rounded-[24px] shadow-none md:h-[480px] md:w-[280px] md:shadow-2xl"
                                 onClick={() => setCurrentIndex(index)}
                                 style={{
                                     transformStyle: "preserve-3d",
@@ -98,7 +98,7 @@ export default function HeroCarousel() {
                                         fill
                                         className="object-cover"
                                         priority={isActive}
-                                        sizes="(max-width: 768px) 300px, 320px"
+                                        sizes="(max-width: 768px) 250px, 280px"
                                     />
 
                                     {!isActive && (
@@ -121,13 +121,27 @@ export default function HeroCarousel() {
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: 20 }}
                             transition={{ duration: 0.5 }}
-                            className="absolute bottom-[10%] left-[8%] flex flex-col items-start text-left text-white md:bottom-[20%] md:left-[12%]"
+                            className="absolute bottom-[15%] left-[12%] flex flex-col items-start text-left text-white md:bottom-[22%] md:left-[22%]"
                         >
-                            <h2 className="text-3xl font-black tracking-tight drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] md:text-6xl">
+                            <h2
+                                className="font-black tracking-tight drop-shadow-[0_8px_20px_rgba(0,0,0,0.6)]"
+                                style={{
+                                    fontFamily: '"Lexend Deca", sans-serif',
+                                    fontSize: "clamp(28px, 6vw, 56px)",
+                                    lineHeight: "1.1"
+                                }}
+                            >
                                 {images[currentIndex].title}
                             </h2>
                             <div className="mt-2 h-[2px] w-8 bg-white/90 md:mt-3 md:h-[3px] md:w-16" />
-                            <p className="mt-2 text-sm font-bold drop-shadow-[0_5px_12px_rgba(0,0,0,0.6)] md:mt-4 md:text-xl">
+                            <p
+                                className="mt-2 font-bold drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)] md:mt-4"
+                                style={{
+                                    fontFamily: '"Lexend Deca", sans-serif',
+                                    fontSize: "clamp(12px, 3vw, 20px)",
+                                    opacity: 0.95
+                                }}
+                            >
                                 {images[currentIndex].subtitle}
                             </p>
                         </motion.div>

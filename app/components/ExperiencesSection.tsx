@@ -21,17 +21,19 @@ function ExperienceCard({
   id,
   title,
   duration,
+  durationDescription,
   image,
 }: {
   id: string;
   title: string;
   duration: string;
+  durationDescription?: string;
   image: string;
 }) {
   return (
     <motion.article
       variants={fadeInVariants}
-      className="flex h-full w-[280px] min-w-[280px] max-w-[280px] shrink-0 flex-col items-center overflow-hidden rounded-[40px] bg-white p-6 shadow-xl transition-transform hover:-translate-y-1 sm:w-[300px] sm:min-w-[300px] sm:max-w-[300px] md:w-[320px] md:min-w-[320px] md:max-w-[320px] lg:w-[350px] lg:min-w-[350px] lg:max-w-[350px]"
+      className="flex h-full w-[240px] min-w-[240px] max-w-[240px] shrink-0 flex-col items-center overflow-hidden rounded-[40px] bg-white p-6 shadow-xl transition-transform hover:-translate-y-1 sm:w-[260px] sm:min-w-[260px] sm:max-w-[260px] md:w-[280px] md:min-w-[280px] md:max-w-[280px] lg:w-[300px] lg:min-w-[300px] lg:max-w-[300px]"
     >
       <div className="relative aspect-[16/11] w-full shrink-0 overflow-hidden rounded-[32px] bg-neutral-100">
         <Image
@@ -39,7 +41,7 @@ function ExperienceCard({
           alt={title}
           fill
           className="object-cover"
-          sizes="(max-width: 640px) 280px, (max-width: 1024px) 320px, 350px"
+          sizes="(max-width: 640px) 240px, (max-width: 1024px) 280px, 300px"
         />
       </div>
 
@@ -51,6 +53,11 @@ function ExperienceCard({
           <p className="text-lg font-semibold text-[#00843d] md:text-xl">
             {duration}
           </p>
+          {durationDescription && (
+            <p className="text-sm font-medium text-[#00843d]/80 -mt-2">
+              {durationDescription}
+            </p>
+          )}
         </div>
 
         <Link
@@ -101,7 +108,7 @@ export default function ExperiencesSection() {
 
   const handleScroll = (direction: "left" | "right") => {
     if (!scrollRef.current) return;
-    const cardWidth = 350 + 32; // card width + gap
+    const cardWidth = 300 + 32; // card width + gap
     scrollRef.current.scrollBy({
       left: direction === "left" ? -cardWidth : cardWidth,
       behavior: "smooth",
@@ -135,7 +142,7 @@ export default function ExperiencesSection() {
         Experiences.
       </motion.h2>
 
-      <div className="relative mx-auto max-w-[1200px]">
+      <div className="relative mx-auto max-w-[1000px]">
         {/* Navigation Controls - only show if there's enough content to scroll */}
         {packages.length > 1 && (
           <>
@@ -186,7 +193,8 @@ export default function ExperiencesSection() {
                 id={exp._id}
                 title={exp.title || exp.name}
                 duration={exp.duration || ""}
-                image={exp.image || PLACEHOLDER_IMAGE}
+                durationDescription={exp.durationDescription}
+                image={exp.images?.[0] || exp.image || PLACEHOLDER_IMAGE}
               />
             </div>
           ))}
