@@ -442,64 +442,73 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
         </div>
       </section>
 
-      {/* Inclusions & Exclusions - two boxes with white borders, no gap */}
-      <section className="relative bg-[#ff4106] px-6 pb-16 pt-6 sm:px-10 sm:pt-8 md:px-16 lg:px-24 lg:pb-20 lg:pt-10" id="inclusions">
+      {/* Inclusions & Exclusions - white container with colored panels */}
+      <section className="bg-[#ff4106] px-6 pb-16 pt-6 sm:px-10 md:px-16 lg:px-24" id="inclusions">
         <div className="mx-auto max-w-6xl">
-          <div className="h-px w-full bg-white" aria-hidden />
-          <div className="mt-6 grid min-h-[320px] grid-cols-1 md:grid-cols-2 lg:mt-8">
-            {/* Inclusions - green, white border, rounded left only */}
-            <div className="rounded-t-[24px] border-2 border-white border-b-0 border-r-0 bg-[#00843d] p-8 md:rounded-l-[24px] md:rounded-tr-none md:rounded-br-none md:border-b-2 md:border-r-0">
-              <h2 className="text-xl font-bold text-white sm:text-2xl">Inclusions</h2>
-              <ul className="mt-5 space-y-3 text-sm leading-relaxed text-white sm:text-base">
-                {inclusionsList.length === 0 ? (
-                  <li className="text-white/80">No inclusions added yet.</li>
-                ) : (
-                  inclusionsList.map((item) => (
-                    <li key={item._id} className="flex gap-3">
-                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-white" />
-                      {item.text}
-                    </li>
-                  ))
-                )}
-              </ul>
-            </div>
-            {/* Exclusions - orange, white border, rounded right only */}
-            <div className="rounded-b-[24px] border-2 border-white border-t-0 border-l-0 bg-[#ff4106] p-8 md:rounded-r-[24px] md:rounded-tl-none md:rounded-bl-none md:border-t-2 md:border-l-0">
-              <h2 className="text-xl font-bold text-white sm:text-2xl">Exclusions</h2>
-              <ul className="mt-5 space-y-3 text-sm leading-relaxed text-white sm:text-base">
-                {exclusionsList.length === 0 ? (
-                  <li className="text-white/80">No exclusions added yet.</li>
-                ) : (
-                  exclusionsList.map((item) => (
-                    <li key={item._id} className="flex gap-3">
-                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-white" />
-                      {item.text}
-                    </li>
-                  ))
-                )}
-              </ul>
+          <div className="mb-12 h-px w-full bg-white" />
+          <div className="rounded-[40px] bg-white p-6 lg:rounded-[64px] lg:p-8">
+            <div className="grid gap-6 md:grid-cols-2 lg:gap-8">
+              {/* Inclusions - green panel */}
+              <div className="rounded-[24px] bg-[#00843d] p-6 lg:rounded-[32px] lg:p-10">
+                <h2 className="text-xl font-bold text-white sm:text-2xl">Inclusions</h2>
+                <ul className="mt-6 space-y-4 text-sm leading-relaxed text-white sm:text-base">
+                  {inclusionsList.length === 0 ? (
+                    <li className="text-white/80">No inclusions added yet.</li>
+                  ) : (
+                    inclusionsList.map((item) => (
+                      <li key={item._id} className="flex gap-3">
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-white" />
+                        <span>{item.text}</span>
+                      </li>
+                    ))
+                  )}
+                </ul>
+              </div>
+
+              {/* Exclusions - orange panel */}
+              <div className="rounded-[24px] bg-[#ff4106] p-6 lg:rounded-[32px] lg:p-10">
+                <h2 className="text-xl font-bold text-white sm:text-2xl">Exclusions</h2>
+                <ul className="mt-6 space-y-4 text-sm leading-relaxed text-white sm:text-base">
+                  {exclusionsList.length === 0 ? (
+                    <li className="text-white/80">No exclusions added yet.</li>
+                  ) : (
+                    exclusionsList.map((item) => (
+                      <li key={item._id} className="flex gap-3">
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-white" />
+                        <span>{item.text}</span>
+                      </li>
+                    ))
+                  )}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Terms and Conditions & Cancellation Policy - green outer container, white inner panels */}
-      <section className="bg-[#ff4106] px-6 pb-16 pt-6 sm:px-10 sm:pt-8 md:px-16 lg:px-24 lg:pb-20 lg:pt-10" id="terms">
+      <section className="bg-[#ff4106] px-6 pb-20 pt-6 sm:px-10 md:px-16 lg:px-24" id="terms">
         <div className="mx-auto max-w-6xl">
-          <div className="rounded-[20px] bg-[#00843d] p-6 sm:p-8 lg:p-10">
-            <div className="grid gap-6 md:grid-cols-2 md:gap-8">
+          <div className="rounded-[40px] bg-[#00843d] p-6 lg:rounded-[64px] lg:p-10">
+            <div className="grid gap-6 md:grid-cols-2 lg:gap-8">
               {/* Terms and Conditions - white panel */}
-              <div className="rounded-2xl bg-white p-6 shadow-md sm:p-8">
+              <div className="rounded-[24px] bg-white p-6 lg:rounded-[32px] lg:p-10">
                 <h2 className="text-xl font-bold text-[#00843d] sm:text-2xl">Terms and Conditions</h2>
-                <div className="mt-5 text-sm leading-relaxed text-gray-800 sm:text-base whitespace-pre-wrap">
+                <div
+                  className="mt-6 text-sm leading-relaxed text-[#00843d] sm:text-base whitespace-pre-wrap font-medium"
+                  style={{ fontFamily: '"Lexend Deca", sans-serif' }}
+                >
                   {termsContent || "No terms and conditions added yet."}
                 </div>
               </div>
 
               {/* Cancellation & Refund Policy - white panel */}
-              <div className="rounded-2xl bg-white p-6 shadow-md sm:p-8">
+              <div className="rounded-[24px] bg-white p-6 lg:rounded-[32px] lg:p-10">
                 <h2 className="text-xl font-bold text-[#00843d] sm:text-2xl">Cancellation & Refund Policy</h2>
-                <div className="mt-5 text-sm leading-relaxed text-gray-800 sm:text-base whitespace-pre-wrap">
+                <div
+                  className="mt-6 text-sm leading-relaxed text-[#00843d] sm:text-base whitespace-pre-wrap font-medium"
+                  style={{ fontFamily: '"Lexend Deca", sans-serif' }}
+                >
                   {paymentRefundContent || "No cancellation and refund policy added yet."}
                 </div>
               </div>

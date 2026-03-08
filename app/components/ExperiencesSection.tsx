@@ -33,9 +33,9 @@ function ExperienceCard({
   return (
     <motion.article
       variants={fadeInVariants}
-      className="flex h-full w-[290px] min-w-[290px] max-w-[290px] shrink-0 flex-col items-center overflow-hidden rounded-[48px] rounded-tr-[24px] rounded-br-[24px] bg-white p-6 shadow-xl transition-transform hover:-translate-y-1 sm:w-[320px] sm:min-w-[320px] sm:max-w-[320px] lg:w-[340px] lg:min-w-[340px] lg:max-w-[340px] lg:rounded-[64px] lg:rounded-tr-[32px] lg:rounded-br-[32px]"
+      className="flex h-full w-[290px] min-w-[290px] max-w-[290px] shrink-0 flex-col items-center overflow-hidden rounded-[48px] bg-white p-6 shadow-xl transition-transform hover:-translate-y-1 sm:w-[320px] sm:min-w-[320px] sm:max-w-[320px] lg:w-[340px] lg:min-w-[340px] lg:max-w-[340px] lg:rounded-[64px]"
     >
-      <div className="relative aspect-[16/11] w-full shrink-0 overflow-hidden rounded-[40px] rounded-tr-[24px] bg-neutral-100 lg:rounded-[48px] lg:rounded-tr-[32px]">
+      <div className="relative aspect-[16/11] w-full shrink-0 overflow-hidden rounded-[32px] bg-neutral-100">
         <Image
           src={image || PLACEHOLDER_IMAGE}
           alt={title}
@@ -50,11 +50,11 @@ function ExperienceCard({
           <h3 className="line-clamp-2 min-h-[50px] text-center text-xl font-bold uppercase leading-[1.1] tracking-tight text-[#00843d] md:min-h-[72px] md:text-3xl" style={{ fontFamily: '"Lexend Deca", sans-serif' }}>
             {title}
           </h3>
-          <p className="text-lg font-semibold text-[#00843d] md:text-xl">
+          <p className="text-center text-lg font-semibold text-[#00843d] md:text-xl">
             {duration}
           </p>
           {durationDescription && (
-            <p className="text-sm font-medium text-[#00843d]/80 -mt-2">
+            <p className="text-center text-sm font-medium text-[#00843d]/80 -mt-2">
               {durationDescription}
             </p>
           )}

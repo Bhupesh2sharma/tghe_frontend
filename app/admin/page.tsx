@@ -190,7 +190,8 @@ export default function AdminDashboard() {
                     </div>
                 </div>
 
-                {/* Quick Actions / Chart Placeholder */}
+                {/* Quick Actions / Chart Placeholder - Commented out as requested */}
+                {/* 
                 <div className="rounded-2xl bg-[#ff4106] p-8 shadow-lg shadow-[#ff4106]/20 flex flex-col justify-between text-white">
                     <div>
                         <h2 className="text-xl font-black">Generate Report</h2>
@@ -202,6 +203,7 @@ export default function AdminDashboard() {
                         Download PDF
                     </button>
                 </div>
+                */}
             </div>
         </div>
     );

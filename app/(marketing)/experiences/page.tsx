@@ -50,10 +50,10 @@ export default function ExperiencesPage() {
                         {experiences.map((exp) => (
                             <div
                                 key={exp._id}
-                                className="group flex flex-col overflow-hidden rounded-[48px] rounded-tr-[24px] rounded-br-[24px] bg-white p-4 shadow-xl md:flex-row md:items-stretch lg:rounded-[64px] lg:rounded-tr-[32px] lg:rounded-br-[32px] lg:p-5"
+                                className="group flex flex-col overflow-hidden rounded-[48px] bg-white p-4 shadow-xl md:flex-row md:items-stretch lg:rounded-[64px] lg:p-5"
                             >
                                 {/* Image Section */}
-                                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[24px] md:aspect-auto md:w-[32%] md:rounded-[32px] lg:w-[35%] lg:rounded-[32px]">
+                                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[32px] md:aspect-auto md:w-[32%] md:rounded-[32px] lg:w-[35%] lg:rounded-[32px]">
                                     <Image
                                         src={exp.images?.[0] || exp.image || PLACEHOLDER_IMAGE}
                                         alt={exp.title || exp.name}
@@ -63,7 +63,7 @@ export default function ExperiencesPage() {
                                 </div>
 
                                 {/* Content Section (Green Card) */}
-                                <div className="mt-4 flex flex-1 flex-col justify-between rounded-[24px] rounded-tr-[24px] rounded-br-[24px] bg-[#00843d] p-5 text-white md:ml-5 md:mt-0 lg:ml-6 lg:rounded-[32px] lg:rounded-tr-[32px] lg:rounded-br-[32px] lg:p-6">
+                                <div className="mt-4 flex flex-1 flex-col justify-between rounded-[32px] bg-[#00843d] p-5 text-white md:ml-5 md:mt-0 lg:ml-6 lg:rounded-[32px] lg:p-6">
                                     <div className="flex flex-col">
                                         <h2
                                             className="font-bold tracking-widest text-white"
