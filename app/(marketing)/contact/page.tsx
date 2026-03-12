@@ -67,8 +67,8 @@ export default function ContactPage() {
       await createContact({
         name,
         phone: mobile,
-        email: email || undefined,
-        message: message || undefined,
+        email: email || "",
+        message: message || "",
       }).unwrap();
       form.reset();
       setStatus("success");

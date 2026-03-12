@@ -7,7 +7,7 @@ import {
   useUpdateInclusionExclusionSetMutation,
   useDeleteInclusionExclusionSetMutation,
 } from "../../../store/api";
-import type { InclusionExclusionSet } from "../../../store/api";
+import type { InclusionExclusionSet, InclusionExclusionItem } from "../../../store/api";
 
 export default function AdminInclusionExclusionSetsPage() {
   const { data, isLoading } = useGetInclusionExclusionSetsQuery();
@@ -60,17 +60,20 @@ export default function AdminInclusionExclusionSetsPage() {
       setError("Name is required.");
       return;
     }
-    const validItems = items
+    const validItems: Partial<InclusionExclusionItem>[] = items
       .filter((i) => i.text.trim())
       .map((i, idx) => ({ type: i.type, text: i.text.trim(), order: idx }));
     try {
       if (editingId) {
         await updateSet({
           id: editingId,
-          body: { name: name.trim(), items: validItems },
+          body: { name: name.trim(), items: validItems as InclusionExclusionItem[] },
         }).unwrap();
       } else {
-        await createSet({ name: name.trim(), items: validItems }).unwrap();
+        await createSet({
+          name: name.trim(),
+          items: validItems as InclusionExclusionItem[],
+        }).unwrap();
       }
       resetForm();
     } catch (err: unknown) {

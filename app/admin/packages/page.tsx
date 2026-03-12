@@ -108,10 +108,26 @@ export default function AdminPackagesPage() {
     setImagePreviewUrl(null);
     setSelectedCategoryIds(pkg.categories?.map((c) => c._id) ?? []);
     setSelectedDestinationIds(pkg.destinations?.map((d) => d._id) ?? []);
-    const itId = typeof pkg.itineraryTemplate === "string" ? pkg.itineraryTemplate : (pkg.itineraryTemplate as { _id?: string })?._id ?? "";
-    const ieId = typeof pkg.inclusionExclusionSet === "string" ? pkg.inclusionExclusionSet : (pkg.inclusionExclusionSet as { _id?: string })?._id ?? "";
-    const ppId = typeof pkg.paymentRefundPolicyTemplate === "string" ? pkg.paymentRefundPolicyTemplate : (pkg.paymentRefundPolicyTemplate as { _id?: string })?._id ?? "";
-    const tcId = typeof pkg.termsConditionTemplate === "string" ? pkg.termsConditionTemplate : (pkg.termsConditionTemplate as { _id?: string })?._id ?? "";
+    const itId =
+      typeof pkg.itineraryTemplate === "string"
+        ? pkg.itineraryTemplate
+        : ((pkg.itineraryTemplate as unknown as { _id?: string } | undefined)?._id ??
+          "");
+    const ieId =
+      typeof pkg.inclusionExclusionSet === "string"
+        ? pkg.inclusionExclusionSet
+        : ((pkg.inclusionExclusionSet as unknown as { _id?: string } | undefined)
+            ?._id ?? "");
+    const ppId =
+      typeof pkg.paymentRefundPolicyTemplate === "string"
+        ? pkg.paymentRefundPolicyTemplate
+        : ((pkg.paymentRefundPolicyTemplate as unknown as { _id?: string } | undefined)
+            ?._id ?? "");
+    const tcId =
+      typeof pkg.termsConditionTemplate === "string"
+        ? pkg.termsConditionTemplate
+        : ((pkg.termsConditionTemplate as unknown as { _id?: string } | undefined)
+            ?._id ?? "");
     setSelectedItineraryTemplateId(itId);
     setSelectedInclusionExclusionSetId(ieId);
     setSelectedPaymentPolicyId(ppId);
