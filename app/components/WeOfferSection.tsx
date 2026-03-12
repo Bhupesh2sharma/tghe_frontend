@@ -12,48 +12,79 @@ const fadeInVariants = {
   }
 } as const;
 
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" as const }
+  }
+} as const;
+
 const services = [
-  { label: "transport", img: "/img/1.png" },
-  { label: "sight seeing", img: "/img/2.png" },
-  { label: "accomodation", img: "/img/3.png" },
-  { label: "travel guide", img: "/img/4.png" },
-  { label: "adventures", img: "/img/5.png" },
-  { label: "permits", img: "/img/6.png" },
+  { label: "Transport", img: "/img/1.png" },
+  { label: "Sight Seeing", img: "/img/2.png" },
+  { label: "Accommodation", img: "/img/3.png" },
+  { label: "Travel Guide", img: "/img/4.png" },
+  { label: "Adventures", img: "/img/5.png" },
+  { label: "Permits", img: "/img/6.png" },
 ];
 
 export default function WeOfferSection() {
   return (
-    <section className="relative w-full bg-[#ff4106] px-6 py-8 sm:px-12 sm:py-10 md:px-20 md:py-12 lg:px-24">
-      <div className="mx-auto max-w-[1400px]">
-        <motion.h2
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={fadeInVariants}
-          className="mb-14 text-center font-semibold tracking-tight text-white md:mb-16"
-          style={{
-            fontFamily: '"Lexend Deca", sans-serif',
-            fontSize: "clamp(40px, 8vw, 92px)",
-            lineHeight: "1"
-          }}
-        >
-          We offer.
-        </motion.h2>
+    <section className="relative w-full bg-[#ff4106] px-6 py-16 sm:px-12 sm:py-20 md:px-20 md:py-24 lg:px-24 overflow-hidden">
+      {/* Subtle background decoration */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-[#00843d]/5 blur-3xl" />
+        <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-[#00843d]/5 blur-3xl" />
+      </div>
 
+      <div className="relative mx-auto max-w-[1400px]">
+        {/* Heading */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ staggerChildren: 0.1 }}
-          className="mx-auto grid w-full max-w-6xl grid-cols-3 gap-6 sm:flex sm:items-center sm:justify-between sm:gap-4 md:gap-6"
+          variants={fadeInVariants}
+          className="mb-16 text-center md:mb-20"
+        >
+          <h2
+            className="font-semibold tracking-tight text-white"
+            style={{
+              fontFamily: '"Lexend Deca", sans-serif',
+              fontSize: "clamp(40px, 8vw, 92px)",
+              lineHeight: "1",
+            }}
+          >
+            We offer.
+          </h2>
+          <p
+            className="mx-auto mt-6 max-w-xl text-white/90"
+            style={{
+              fontFamily: '"Lexend Deca", sans-serif',
+              fontSize: "clamp(15px, 2vw, 17px)",
+              lineHeight: "1.7",
+            }}
+          >
+            Everything you need for an extraordinary Himalayan experience.
+          </p>
+        </motion.div>
+
+        {/* Service Cards */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ staggerChildren: 0.08 }}
+          className="grid grid-cols-3 gap-4 sm:grid-cols-6 sm:gap-6 md:gap-8"
         >
           {services.map(({ label, img }) => (
             <motion.div
               key={label}
-              variants={fadeInVariants}
-              className="group flex flex-1 flex-col items-center text-center transition-transform hover:scale-105"
+              variants={cardVariants}
+              className="group flex flex-col items-center justify-center"
             >
-              <div className="relative h-14 w-14 shrink-0 sm:h-20 sm:w-20 md:h-24 md:w-24 lg:h-32 lg:w-32">
+              <div className="relative h-14 w-14 transition-transform duration-300 group-hover:scale-110 sm:h-16 sm:w-16 md:h-20 md:w-20 lg:h-24 lg:w-24">
                 <Image
                   src={img}
                   alt={label}
@@ -65,13 +96,13 @@ export default function WeOfferSection() {
           ))}
         </motion.div>
 
-        {/* Decorative line at the bottom */}
+        {/* Divider */}
         <motion.div
           initial={{ scaleX: 0, opacity: 0 }}
           whileInView={{ scaleX: 1, opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 1, ease: "easeInOut", delay: 0.5 }}
-          className="mx-auto mt-10 h-[1.5px] w-full bg-white/30 md:mt-12 origin-center"
+          transition={{ duration: 1, ease: "easeInOut", delay: 0.6 }}
+          className="mx-auto mt-16 h-px w-full max-w-3xl bg-slate-200 dark:bg-slate-700 origin-center"
         />
       </div>
     </section>

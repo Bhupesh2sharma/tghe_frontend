@@ -45,7 +45,7 @@ export default function WeAreSection() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="mx-auto flex max-w-5xl flex-col items-center space-y-8 text-center text-white sm:space-y-10 md:space-y-12"
+          className="mx-auto flex max-w-5xl flex-col items-center space-y-8 text-center text-white/90 sm:space-y-10 md:space-y-12"
         >
           <motion.p variants={fadeInVariants} className="font-medium text-base leading-relaxed tracking-tight sm:text-[20px] sm:leading-[28px]" style={{ fontFamily: '"Lexend Deca", sans-serif' }}>
             We are The Great Himalayan Escape, your trusted travel partner for
@@ -63,7 +63,7 @@ export default function WeAreSection() {
             natural and cultural heritage of the region.
           </motion.p>
 
-          <motion.p variants={fadeInVariants} className="font-medium text-[20px] leading-[28px] tracking-tight">
+          <motion.p variants={fadeInVariants} className="font-medium text-[20px] leading-[28px] tracking-tight" >
             At The Great Himalayan Escape, we believe every journey should be
             unique and transformative. Whether it&apos;s uncovering hidden gems or
             experiencing the grandeur of the Himalayas, we ensure your escape is
@@ -77,6 +77,6 @@ export default function WeAreSection() {
         </motion.div>
 
       </div>
-    </section>
+    </section >
   );
 }

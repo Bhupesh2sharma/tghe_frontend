@@ -29,7 +29,7 @@ export default function HeroCarousel() {
 
         const timer = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % images.length);
-        }, 5000);
+        }, 2500);
 
         return () => {
             window.removeEventListener("resize", handleResize);
@@ -47,10 +47,10 @@ export default function HeroCarousel() {
 
         if (!isVisible) return { opacity: 0, scale: 0.5, x: diff * 400, rotateY: 0, zIndex: 0 };
 
-        // Create a base x position with an additional gap to separate the middle three cards
-        let xBase = diff * (isMobile ? 100 : 280);
-        if (diff > 0) xBase += (isMobile ? 25 : 10);
-        if (diff < 0) xBase -= (isMobile ? 25 : 10);
+        // More tightly packed cards - reduce spacing for overlap effect
+        let xBase = diff * (isMobile ? 90 : 200);
+        if (diff > 0) xBase += (isMobile ? 20 : 0);
+        if (diff < 0) xBase -= (isMobile ? 20 : 0);
 
         return {
             zIndex: 10 - Math.abs(diff),
@@ -87,7 +87,7 @@ export default function HeroCarousel() {
                                     stiffness: 120,
                                     damping: 18,
                                 }}
-                                className="absolute h-[480px] w-[310px] cursor-pointer overflow-hidden rounded-[24px] shadow-none md:h-[580px] md:w-[280px] md:shadow-2xl"
+                                className="absolute h-[480px] w-[320px] cursor-pointer overflow-hidden rounded-[24px] shadow-none md:h-[580px] md:w-[320px] md:shadow-2xl"
                                 onClick={() => setCurrentIndex(index)}
                                 style={{
                                     transformStyle: "preserve-3d",
@@ -100,7 +100,7 @@ export default function HeroCarousel() {
                                         fill
                                         className="object-cover"
                                         priority={isActive}
-                                        sizes="(max-width: 768px) 310px, 280px"
+                                        sizes="(max-width: 768px) 360px, 320px"
                                     />
 
                                     {!isActive && (

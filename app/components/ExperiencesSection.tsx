@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useGetPackagesQuery } from "../../store/api";
 import Link from "next/link";
 
@@ -31,17 +31,14 @@ function ExperienceCard({
   image: string;
 }) {
   return (
-    <motion.article
-      variants={fadeInVariants}
-      className="flex h-full w-[290px] min-w-[290px] max-w-[290px] shrink-0 flex-col items-center overflow-hidden rounded-[48px] bg-white p-6 shadow-xl transition-transform hover:-translate-y-1 sm:w-[320px] sm:min-w-[320px] sm:max-w-[320px] lg:w-[340px] lg:min-w-[340px] lg:max-w-[340px] lg:rounded-[64px]"
-    >
+    <article className="flex h-full w-full flex-col items-center overflow-hidden rounded-[48px] bg-white p-6 shadow-xl transition-transform hover:-translate-y-1 lg:rounded-[64px]">
       <div className="relative aspect-[16/11] w-full shrink-0 overflow-hidden rounded-[32px] bg-neutral-100">
         <Image
           src={image || PLACEHOLDER_IMAGE}
           alt={title}
           fill
           className="object-cover"
-          sizes="(max-width: 640px) 290px, (max-width: 1024px) 320px, 340px"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 340px"
         />
       </div>
 
@@ -67,53 +64,61 @@ function ExperienceCard({
           DETAILS
         </Link>
       </div>
-    </motion.article>
+    </article>
   );
 }
+
+const MOBILE_BREAKPOINT = 768;
 
 export default function ExperiencesSection() {
   const { data: packagesResponse, isLoading } = useGetPackagesQuery();
   const packages = packagesResponse?.data ?? [];
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState<"left" | "right">("right");
   const isPaused = useRef(false);
-
-  // Only duplicate for seamless loop if we have enough items (e.g. > 3)
-  // This prevents the carousel from looking "fake" when there are only 1 or 2 items
-  const shouldLoop = packages.length >= 4;
-  const allExperiences = shouldLoop ? [...packages, ...packages] : packages;
+  const [cardsToShow, setCardsToShow] = useState(3);
+  const total = packages.length;
 
   useEffect(() => {
-    const scrollContainer = scrollRef.current;
-    if (!scrollContainer || allExperiences.length === 0 || !shouldLoop) return;
-
-    let animationFrameId: number;
-    const scrollSpeed = 0.5; // Pixels per frame
-
-    const scroll = () => {
-      if (!isPaused.current) {
-        scrollContainer.scrollLeft += scrollSpeed;
-
-        // Reset scroll position for seamless loop
-        if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth / 2) {
-          scrollContainer.scrollLeft = 0;
-        }
-      }
-      animationFrameId = requestAnimationFrame(scroll);
+    const updateCardsToShow = () => {
+      setCardsToShow(window.innerWidth < MOBILE_BREAKPOINT ? 1 : 3);
     };
+    updateCardsToShow();
+    window.addEventListener("resize", updateCardsToShow);
+    return () => window.removeEventListener("resize", updateCardsToShow);
+  }, []);
 
-    animationFrameId = requestAnimationFrame(scroll);
+  // Clamp index when switching mobile ↔ desktop so we don't show empty slides
+  useEffect(() => {
+    setCurrentIndex((i) => Math.min(i, Math.max(0, total - cardsToShow)));
+  }, [cardsToShow, total]);
+  const canGoLeft = currentIndex > 0;
+  const canGoRight = currentIndex < total - cardsToShow;
 
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [shouldLoop, packages]);
-
-  const handleScroll = (direction: "left" | "right") => {
-    if (!scrollRef.current) return;
-    const cardWidth = 320 + 32; // card width (avg) + gap
-    scrollRef.current.scrollBy({
-      left: direction === "left" ? -cardWidth : cardWidth,
-      behavior: "smooth",
+  const goNext = useCallback(() => {
+    setDirection("right");
+    setCurrentIndex((i) => {
+      if (i >= total - cardsToShow) return 0;
+      return i + 1;
     });
-  };
+  }, [total, cardsToShow]);
+
+  const goPrev = useCallback(() => {
+    if (!canGoLeft) return;
+    setDirection("left");
+    setCurrentIndex((i) => i - 1);
+  }, [canGoLeft]);
+
+  // Auto-play
+  useEffect(() => {
+    if (total <= cardsToShow) return;
+    const interval = setInterval(() => {
+      if (!isPaused.current) goNext();
+    }, 3500);
+    return () => clearInterval(interval);
+  }, [goNext, total, cardsToShow]);
+
+  const visiblePackages = packages.slice(currentIndex, currentIndex + cardsToShow);
 
   if (isLoading) {
     return (
@@ -125,32 +130,66 @@ export default function ExperiencesSection() {
 
   if (packages.length === 0) return null;
 
+  const slideVariants = {
+    enter: (dir: "left" | "right") => ({
+      x: dir === "right" ? 120 : -120,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      transition: { duration: 0.45, ease: "easeInOut" as const },
+    },
+    exit: (dir: "left" | "right") => ({
+      x: dir === "right" ? -120 : 120,
+      opacity: 0,
+      transition: { duration: 0.35, ease: "easeInOut" as const },
+    }),
+  };
+
   return (
-    <section className="relative w-full bg-[#ff4106] px-6 py-8 sm:px-12 sm:py-10 md:px-20 md:py-12 lg:px-24">
-      <motion.h2
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={fadeInVariants}
-        className="mb-16 text-center font-semibold tracking-tight text-white md:mb-20"
-        style={{
-          fontFamily: '"Lexend Deca", sans-serif',
-          fontSize: "clamp(40px, 8vw, 92px)",
-          lineHeight: "1"
-        }}
-      >
-        Experiences.
-      </motion.h2>
+    <section className="relative w-full bg-[#ff4106] px-6 py-8 sm:px-12 sm:py-10 md:px-20 md:py-12 lg:px-24 overflow-x-hidden">
+      <div className="mb-8 md:mb-10">
+        <motion.h2
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={fadeInVariants}
+          className="text-center font-semibold tracking-tight text-white"
+          style={{
+            fontFamily: '"Lexend Deca", sans-serif',
+            fontSize: "clamp(40px, 8vw, 92px)",
+            lineHeight: "1"
+          }}
+        >
+          Experiences.
+        </motion.h2>
+        <motion.p
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={fadeInVariants}
+          className="mx-auto mt-6 max-w-xl text-center text-white/90"
+          style={{
+            fontFamily: '"Lexend Deca", sans-serif',
+            fontSize: "clamp(15px, 2vw, 17px)",
+            lineHeight: "1.7"
+          }}
+        >
+          Handcrafted journeys through Sikkim and the Himalayas, built for every kind of traveller.
+        </motion.p>
+      </div>
 
       <div className="relative mx-auto max-w-[1100px]">
-        {/* Navigation Controls - only show if shouldLoop is active or there are enough items */}
-        {(shouldLoop || packages.length > 3) && (
+        {/* Left Arrow */}
+        {total > cardsToShow && (
           <>
             <div className="absolute -left-6 top-1/2 z-30 -translate-y-1/2 md:-left-12 lg:-left-16">
               <button
                 type="button"
-                onClick={() => handleScroll("left")}
-                className="flex h-12 w-12 items-center justify-center rounded-full bg-white/80 text-[#ff4106] shadow-xl backdrop-blur-sm transition-all hover:bg-white hover:scale-110 active:scale-90"
+                onClick={goPrev}
+                disabled={!canGoLeft}
+                className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-[#00843d] shadow-xl backdrop-blur-sm transition-all hover:bg-white hover:scale-110 active:scale-90 border border-gray-100 disabled:opacity-30 disabled:cursor-not-allowed disabled:scale-100"
                 aria-label="Previous"
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
@@ -162,8 +201,9 @@ export default function ExperiencesSection() {
             <div className="absolute -right-6 top-1/2 z-30 -translate-y-1/2 md:-right-12 lg:-right-16">
               <button
                 type="button"
-                onClick={() => handleScroll("right")}
-                className="flex h-12 w-12 items-center justify-center rounded-full bg-white/80 text-[#ff4106] shadow-xl backdrop-blur-sm transition-all hover:bg-white hover:scale-110 active:scale-90"
+                onClick={goNext}
+                disabled={!canGoRight}
+                className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-[#00843d] shadow-xl backdrop-blur-sm transition-all hover:bg-white hover:scale-110 active:scale-90 border border-gray-100 disabled:opacity-30 disabled:cursor-not-allowed disabled:scale-100"
                 aria-label="Next"
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
@@ -174,42 +214,65 @@ export default function ExperiencesSection() {
           </>
         )}
 
-        {/* Cards Container */}
+        {/* Cards */}
         <div
-          ref={scrollRef}
+          className="overflow-hidden py-8"
           onMouseEnter={() => (isPaused.current = true)}
           onMouseLeave={() => (isPaused.current = false)}
-          className={`hide-scrollbar flex ${packages.length < 3 ? 'justify-center' : ''} gap-8 overflow-x-auto scroll-smooth px-4 py-8`}
-          style={{
-            WebkitOverflowScrolling: "touch",
-          }}
         >
-          {allExperiences.map((exp, idx) => (
-            <div
-              key={`${exp._id}-${idx}`}
-              className="shrink-0"
+          <AnimatePresence mode="popLayout" custom={direction} initial={false}>
+            <motion.div
+              key={currentIndex}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              className={`grid gap-6 ${
+                cardsToShow === 1
+                  ? "grid-cols-1 max-w-[340px] mx-auto"
+                  : total === 1
+                    ? "grid-cols-1 max-w-[340px] mx-auto"
+                    : total === 2
+                      ? "grid-cols-2"
+                      : "grid-cols-3"
+              }`}
             >
-              <ExperienceCard
-                id={exp._id}
-                title={exp.title || exp.name}
-                duration={exp.duration || ""}
-                durationDescription={exp.durationDescription}
-                image={exp.images?.[0] || exp.image || PLACEHOLDER_IMAGE}
-              />
-            </div>
-          ))}
+              {visiblePackages.map((exp) => (
+                <ExperienceCard
+                  key={exp._id}
+                  id={exp._id}
+                  title={exp.title || exp.name}
+                  duration={exp.duration || ""}
+                  durationDescription={exp.durationDescription}
+                  image={exp.images?.[0] || exp.image || PLACEHOLDER_IMAGE}
+                />
+              ))}
+            </motion.div>
+          </AnimatePresence>
         </div>
-      </div>
 
-      <style jsx>{`
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
+        {/* Dot indicators */}
+        {total > cardsToShow && (
+          <div className="flex items-center justify-center gap-2 mt-2">
+            {Array.from({ length: total - cardsToShow + 1 }).map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => {
+                  setDirection(i > currentIndex ? "right" : "left");
+                  setCurrentIndex(i);
+                }}
+                className={`h-2 rounded-full transition-all duration-300 ${i === currentIndex
+                  ? "w-8 bg-[#00843d]"
+                  : "w-2 bg-slate-300 hover:bg-slate-400"
+                  }`}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </section>
   );
 }

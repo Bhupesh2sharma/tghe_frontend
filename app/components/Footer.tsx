@@ -66,7 +66,7 @@ function SocialIcon({
 
 export default function Footer() {
   return (
-    <footer className="relative w-full bg-[#ff4106] pt-12">
+    <footer className="relative w-full pt-12">
       <div className="mx-3 rounded-t-[40px] bg-[#00843d] px-8 py-20 sm:mx-6 sm:px-12 md:mx-10 md:px-16 lg:mx-12 lg:px-20">
         <div className="mx-auto max-w-[1400px]">
           <motion.div

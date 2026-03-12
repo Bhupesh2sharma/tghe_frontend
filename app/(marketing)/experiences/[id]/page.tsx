@@ -141,7 +141,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-[#ff4106] flex items-center justify-center">
+      <main className="min-h-screen bg-slate-100 dark:bg-gray-900 flex items-center justify-center">
         <div className="relative h-32 w-32">
           <Image
             src="/Final_Loader.gif"
@@ -160,14 +160,14 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
   }
 
   return (
-    <main className="min-h-screen bg-[#ff4106]">
+    <main className="min-h-screen bg-slate-100 dark:bg-gray-900">
       <section className="px-6 pb-16 pt-28 sm:px-10 md:px-16 lg:px-24 lg:pb-20 lg:pt-32">
         <div className="mx-auto max-w-6xl">
           {/* Back link */}
-          <div className="mb-8 flex items-center justify-between gap-4 text-sm font-medium text-white/80">
+          <div className="mb-8 flex items-center justify-between gap-4 text-sm font-medium text-slate-600 dark:text-slate-300">
             <Link
               href="/experiences"
-              className="inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-1.5 text-xs uppercase tracking-[0.18em] transition hover:bg-white/10"
+              className="inline-flex items-center gap-2 rounded-full border border-slate-300 dark:border-slate-600 px-4 py-1.5 text-xs uppercase tracking-[0.18em] transition hover:bg-slate-200 dark:hover:bg-slate-700"
               style={{ fontFamily: '"Lexend Deca", sans-serif' }}
             >
               <span className="text-base">←</span>
@@ -176,10 +176,10 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
 
             <button
               onClick={handleShare}
-              className="inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-1.5 text-xs uppercase tracking-[0.18em] transition hover:bg-white/10"
+              className="inline-flex items-center gap-2 rounded-full border border-slate-300 dark:border-slate-600 px-4 py-1.5 text-xs uppercase tracking-[0.18em] transition hover:bg-slate-200 dark:hover:bg-slate-700"
               style={{ fontFamily: '"Lexend Deca", sans-serif' }}
             >
-              <Share2 size={14} className={isCopied ? "text-green-400" : ""} />
+              <Share2 size={14} className={isCopied ? "text-green-600" : ""} />
               <span>{isCopied ? "Copied!" : "Share"}</span>
             </button>
           </div>
@@ -211,7 +211,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
                     <button
                       type="button"
                       onClick={goPrev}
-                      className="absolute left-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white/90 bg-white/95 text-[#101010] shadow-xl backdrop-blur-sm transition hover:bg-white hover:scale-110 active:scale-95"
+                      className="absolute left-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white/90 bg-white/95 text-slate-800 shadow-xl backdrop-blur-sm transition hover:bg-white hover:scale-110 active:scale-95"
                       aria-label="Previous image"
                     >
                       <ChevronLeft className="h-6 w-6" strokeWidth={2.5} />
@@ -219,7 +219,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
                     <button
                       type="button"
                       onClick={goNext}
-                      className="absolute right-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white/90 bg-white/95 text-[#101010] shadow-xl backdrop-blur-sm transition hover:bg-white hover:scale-110 active:scale-95"
+                      className="absolute right-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white/90 bg-white/95 text-slate-800 shadow-xl backdrop-blur-sm transition hover:bg-white hover:scale-110 active:scale-95"
                       aria-label="Next image"
                     >
                       <ChevronRight className="h-6 w-6" strokeWidth={2.5} />
@@ -255,7 +255,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
               </article>
 
               {/* Facilities strip - just below image, above the line */}
-              <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-4 border-b border-white pb-4 pt-6 text-[11px] font-semibold text-white sm:gap-x-16 sm:pb-6 sm:text-xl lg:gap-x-20">
+              <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-4 border-b border-slate-300 dark:border-slate-600 pb-4 pt-6 text-[11px] font-semibold text-slate-700 dark:text-slate-200 sm:gap-x-16 sm:pb-6 sm:text-xl lg:gap-x-20">
                 <div className="inline-flex items-center gap-1.5 sm:gap-3">
                   <Bus className="h-4 w-4 shrink-0 sm:h-6 sm:w-6" />
                   <span>Transport</span>
@@ -271,27 +271,27 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
               </div>
             </div>
 
-            {/* Right: Package summary - orange block with white text */}
-            <aside className="flex flex-1 flex-col rounded-[40px] bg-[#ff4106] px-7 py-4 text-white sm:py-8 lg:mt-14 lg:px-10 lg:py-10">
+            {/* Right: Package summary - no background color */}
+            <aside className="flex flex-1 flex-col px-4 py-4 sm:py-8 lg:mt-8 lg:px-6 lg:py-4">
               <div className="flex flex-col gap-6">
                 <h1
-                  className="font-semibold uppercase tracking-tight text-white"
+                  className="font-bold uppercase tracking-tight text-[#00843d]"
                   style={{
                     fontFamily: '"Lexend Deca", sans-serif',
-                    fontSize: "clamp(24px, 7vw, 35px)",
+                    fontSize: "clamp(26px, 6vw, 42px)",
                     lineHeight: "1.1",
                   }}
                 >
                   {exp.title}
                 </h1>
 
-                <div className="flex items-center gap-2 text-white">
-                  <MapPin className="h-5 w-5 shrink-0" />
+                <div className="flex items-center gap-3 text-slate-600 dark:text-slate-300">
+                  <MapPin className="h-6 w-6 shrink-0" strokeWidth={2.5} />
                   <span
-                    className="font-semibold text-white"
+                    className="font-semibold text-slate-600 dark:text-slate-300"
                     style={{
                       fontFamily: '"Lexend Deca", sans-serif',
-                      fontSize: "clamp(16px, 4vw, 19px)",
+                      fontSize: "clamp(18px, 4.5vw, 22px)",
                       lineHeight: "1.3",
                     }}
                   >
@@ -299,35 +299,37 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
                   </span>
                 </div>
 
-                <div className="h-px w-full bg-white/40" aria-hidden />
+                <div className="h-px w-full bg-slate-200 dark:bg-slate-700" aria-hidden />
 
-                <div className="flex items-start gap-2">
-                  <Clock3 className="mt-0.5 h-5 w-5 shrink-0 text-white" />
+                <div className="flex items-start gap-3 text-slate-600 dark:text-slate-300">
+                  <Clock3 className="mt-0.5 h-6 w-6 shrink-0" strokeWidth={2.5} />
                   <div className="space-y-0.5">
                     <p
-                      className="font-semibold text-white"
+                      className="font-semibold text-slate-600 dark:text-slate-300"
                       style={{
                         fontFamily: '"Lexend Deca", sans-serif',
-                        fontSize: "clamp(16px, 4vw, 19px)",
+                        fontSize: "clamp(18px, 4.5vw, 22px)",
                         lineHeight: "1.3",
                       }}
                     >
                       {exp.duration}
                       {exp.durationDescription ? (
-                        <span className="block mt-1 font-normal opacity-90" style={{ fontSize: "clamp(14px, 3.5vw, 17px)" }}>{exp.durationDescription}</span>
+                        <span className="block mt-1 font-medium text-slate-600 dark:text-slate-400" style={{ fontSize: "clamp(15px, 4vw, 18px)" }}>{exp.durationDescription}</span>
                       ) : null}
                     </p>
                   </div>
                 </div>
 
-                <div className="h-px w-full bg-white/40" aria-hidden />
+                <div className="h-px w-full bg-slate-200 dark:bg-slate-700" aria-hidden />
 
-                <a
-                  href="#enquiry-form"
-                  className="flex min-h-[50px] w-full items-center justify-center rounded-full bg-[#00843d] px-8 py-3 text-[22px] font-semibold uppercase leading-[33px] tracking-widest text-white shadow-xl transition-all hover:scale-105 hover:bg-[#006b31] active:scale-95"
-                >
-                  Enquire now
-                </a>
+                <div className="mt-2">
+                  <a
+                    href="#enquiry-form"
+                    className="inline-flex min-h-[55px] items-center justify-center rounded-full bg-[#00843d] px-10 py-3 text-[18px] font-bold uppercase leading-[33px] tracking-[0.15em] text-white shadow-[0_8px_25px_rgb(0,132,61,0.35)] transition-all hover:scale-105 hover:bg-[#ff4106] active:scale-95"
+                  >
+                    Enquire now
+                  </a>
+                </div>
               </div>
             </aside>
           </div>
@@ -335,18 +337,18 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
       </section>
 
       {/* Trip Highlights + Itinerary (left) | Enquiry form (right) - exact layout as design */}
-      <section className="overflow-visible bg-[#ff4106] -mt-6 px-6 pb-16 pt-0 sm:px-10 md:px-16 lg:px-24 lg:pb-20 lg:-mt-8" id="highlights" style={{ overflow: "visible" }}>
+      <section className="overflow-visible bg-slate-100 dark:bg-gray-900 -mt-6 px-6 pb-16 pt-0 sm:px-10 md:px-16 lg:px-24 lg:pb-20 lg:-mt-8" id="highlights" style={{ overflow: "visible" }}>
         <div className="mx-auto max-w-6xl overflow-visible" style={{ overflow: "visible" }}>
           <div className="flex flex-col gap-10 overflow-visible sm:flex-row sm:items-start sm:gap-8 md:gap-12 lg:gap-14" style={{ overflow: "visible" }}>
             {/* Left: Trip Highlights section (includes Itinerary in same section) */}
             <div className="min-w-0 flex-1 space-y-6">
-              <h2 className="text-xl font-bold text-white sm:text-2xl">Trip Highlights</h2>
-              <p className="max-w-xl leading-relaxed text-white/95">
+              <h2 className="text-xl font-bold text-[#00843d] sm:text-2xl">Trip Highlights</h2>
+              <p className="max-w-xl leading-relaxed text-slate-700 dark:text-slate-300">
                 {exp.description || "Explore this experience with comfortable stays and curated sightseeing."}
               </p>
-              <div className="h-px w-full max-w-xl bg-white" aria-hidden />
+              <div className="h-px w-full max-w-xl bg-slate-300 dark:bg-slate-700" aria-hidden />
               <div className="max-w-xl">
-                <h3 className="text-lg font-bold text-white sm:text-xl">Itinerary</h3>
+                <h3 className="text-lg font-bold text-[#00843d] sm:text-xl">Itinerary</h3>
                 <div className="mt-3 space-y-3">
                   {itineraryDays.length === 0 ? (
                     <p className="rounded-2xl border border-gray-200 bg-white px-5 py-4 text-sm text-gray-500">
@@ -361,17 +363,17 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
                         <button
                           type="button"
                           onClick={() => setOpenDayIndex(openDayIndex === index ? null : index)}
-                          className="flex w-full items-center justify-between gap-3 px-5 py-4 text-left font-semibold text-gray-800 transition-colors hover:bg-gray-50"
+                          className="flex w-full items-center justify-between gap-3 px-5 py-4 text-left font-semibold text-slate-600 transition-colors hover:bg-gray-50"
                         >
-                          <span className="text-sm sm:text-base">
+                          <span className="text-sm sm:text-base text-slate-600">
                             Day {day.dayNumber}: {day.title}
                           </span>
                           <ChevronDown
-                            className={`h-5 w-5 shrink-0 text-gray-600 transition-transform ${openDayIndex === index ? "rotate-180" : ""}`}
+                            className={`h-5 w-5 shrink-0 text-slate-500 transition-transform ${openDayIndex === index ? "rotate-180" : ""}`}
                           />
                         </button>
                         {openDayIndex === index && day.description && (
-                          <div className="border-t border-gray-100 px-5 py-4 text-sm text-gray-700">
+                          <div className="border-t border-gray-100 px-5 py-4 text-sm text-slate-600">
                             {day.description}
                           </div>
                         )}
@@ -426,7 +428,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
                     name="tourDate"
                     type="date"
                     required
-                    className="w-full rounded-2xl border-2 border-[#00843d] bg-white px-4 py-3 text-gray-900 placeholder-gray-400 outline-none transition focus:border-[#006b31] focus:ring-2 focus:ring-[#00843d]/20"
+                    className="w-full rounded-2xl border-2 border-[#00843d] bg-white px-4 py-3 text-slate-600 placeholder-gray-400 outline-none transition focus:border-[#006b31] focus:ring-2 focus:ring-[#00843d]/20"
                   />
                   <textarea
                     id="enq-message"
@@ -451,15 +453,15 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
       </section>
 
       {/* Inclusions & Exclusions - white container with colored panels */}
-      <section className="bg-[#ff4106] px-6 pb-16 pt-6 sm:px-10 md:px-16 lg:px-24" id="inclusions">
+      <section className="bg-slate-100 dark:bg-gray-900 px-6 pb-16 pt-6 sm:px-10 md:px-16 lg:px-24" id="inclusions">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-12 h-px w-full bg-white" />
+          <div className="mb-12 h-px w-full bg-slate-300 dark:bg-slate-700" />
           <div className="rounded-[40px] bg-white p-6 lg:rounded-[64px] lg:p-8">
             <div className="grid gap-6 md:grid-cols-2 lg:gap-8">
               {/* Inclusions - green panel */}
               <div className="rounded-[24px] bg-[#00843d] p-6 lg:rounded-[32px] lg:p-10">
                 <h2 className="text-xl font-bold text-white sm:text-2xl">Inclusions</h2>
-                <ul className="mt-6 space-y-4 text-sm leading-relaxed text-white sm:text-base">
+                <ul className="mt-6 space-y-4 text-sm leading-relaxed text-white sm:text-base list-none">
                   {inclusionsList.length === 0 ? (
                     <li className="text-white/80">No inclusions added yet.</li>
                   ) : (
@@ -473,10 +475,10 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
                 </ul>
               </div>
 
-              {/* Exclusions - orange panel */}
+              {/* Exclusions - red panel */}
               <div className="rounded-[24px] bg-[#ff4106] p-6 lg:rounded-[32px] lg:p-10">
                 <h2 className="text-xl font-bold text-white sm:text-2xl">Exclusions</h2>
-                <ul className="mt-6 space-y-4 text-sm leading-relaxed text-white sm:text-base">
+                <ul className="mt-6 space-y-4 text-sm leading-relaxed text-white sm:text-base list-none">
                   {exclusionsList.length === 0 ? (
                     <li className="text-white/80">No exclusions added yet.</li>
                   ) : (
@@ -495,7 +497,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
       </section>
 
       {/* Terms and Conditions & Cancellation Policy - green outer container, white inner panels */}
-      <section className="bg-[#ff4106] px-6 pb-20 pt-6 sm:px-10 md:px-16 lg:px-24" id="terms">
+      <section className="bg-slate-100 dark:bg-gray-900 px-6 pb-20 pt-6 sm:px-10 md:px-16 lg:px-24" id="terms">
         <div className="mx-auto max-w-6xl">
           <div className="rounded-[40px] bg-[#00843d] p-6 lg:rounded-[64px] lg:p-10">
             <div className="grid gap-6 md:grid-cols-2 lg:gap-8">

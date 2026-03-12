@@ -22,13 +22,13 @@ export default function ExperiencesPage() {
     }
     return (
         <main className="min-h-screen bg-[#ff4106]">
-            <div className="pt-[100px] pb-20 px-6 sm:px-12 md:px-20 lg:px-24">
+            <div className="pt-[140px] md:pt-[160px] pb-20 px-6 sm:px-12 md:px-20 lg:px-24">
 
                 <div className="mx-auto max-w-[1000px]">
                     <div className="mb-8">
                         <Link
                             href="/"
-                            className="inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-1.5 text-sm font-medium text-white/90 transition hover:bg-white/10"
+                            className="inline-flex items-center gap-2 rounded-full border border-white/70 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-white/10"
                             style={{ fontFamily: '"Lexend Deca", sans-serif' }}
                         >
                             <span className="text-base">←</span>
@@ -50,7 +50,7 @@ export default function ExperiencesPage() {
                         {experiences.map((exp) => (
                             <div
                                 key={exp._id}
-                                className="group flex flex-col overflow-hidden rounded-[48px] bg-white p-4 shadow-xl md:flex-row md:items-stretch lg:rounded-[64px] lg:p-5"
+                                className="group flex flex-col overflow-hidden rounded-[48px] bg-white dark:bg-slate-800 p-4 shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.16)] md:flex-row md:items-stretch lg:rounded-[64px] lg:p-5"
                             >
                                 {/* Image Section */}
                                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[32px] md:aspect-auto md:w-[32%] md:rounded-[32px] lg:w-[35%] lg:rounded-[32px]">
