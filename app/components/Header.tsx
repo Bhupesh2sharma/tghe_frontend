@@ -34,8 +34,8 @@ export default function Header() {
       <header
         className={`pointer-events-auto w-full flex flex-col transition-all duration-500 ${
           showSolidHeader
-            ? "max-w-full bg-[#ff4106] shadow-[0_1px_0_rgba(0,0,0,0.06)] border-b border-transparent"
-            : "max-w-[1280px] bg-transparent"
+            ? "max-w-full bg-[#ff4106] shadow-[0_1px_0_rgba(0,0,0,0.06)] border-b border-transparent rounded-b-3xl md:rounded-none"
+            : "max-w-full bg-[#ff4106] shadow-[0_1px_0_rgba(0,0,0,0.06)] border-b border-transparent rounded-b-3xl md:max-w-[1280px] md:bg-transparent md:shadow-none md:border-none md:rounded-none"
         }`}
       >
         {/* Main row */}

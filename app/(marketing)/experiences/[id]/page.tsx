@@ -164,13 +164,13 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
       <section className="px-6 pb-16 pt-28 sm:px-10 md:px-16 lg:px-24 lg:pb-20 lg:pt-32">
         <div className="mx-auto max-w-6xl">
           {/* Back link */}
-          <div className="mb-8 flex items-center justify-between gap-4 text-sm font-medium text-slate-600 dark:text-slate-300">
+          <div className="mb-8 flex items-center justify-between gap-4 text-[10px] sm:text-sm font-medium text-slate-600 dark:text-slate-300">
             <Link
               href="/experiences"
-              className="inline-flex items-center gap-2 rounded-full border border-slate-300 dark:border-slate-600 px-4 py-1.5 text-xs uppercase tracking-[0.18em] transition hover:bg-slate-200 dark:hover:bg-slate-700"
+              className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 dark:border-slate-600 px-2.5 py-0.5 text-[9px] sm:text-xs uppercase tracking-[0.18em] transition hover:bg-slate-200 dark:hover:bg-slate-700"
               style={{ fontFamily: '"Lexend Deca", sans-serif' }}
             >
-              <span className="text-base">←</span>
+              <span className="text-xs sm:text-sm">←</span>
               <span>Back to experiences</span>
             </Link>
 
@@ -211,7 +211,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
                     <button
                       type="button"
                       onClick={goPrev}
-                      className="absolute left-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white/90 bg-white/95 text-slate-800 shadow-xl backdrop-blur-sm transition hover:bg-white hover:scale-110 active:scale-95"
+                      className="absolute left-4 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white/90 bg-white/95 text-slate-800 shadow-xl backdrop-blur-sm transition hover:bg-white hover:scale-110 active:scale-95 sm:flex"
                       aria-label="Previous image"
                     >
                       <ChevronLeft className="h-6 w-6" strokeWidth={2.5} />
@@ -219,7 +219,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
                     <button
                       type="button"
                       onClick={goNext}
-                      className="absolute right-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white/90 bg-white/95 text-slate-800 shadow-xl backdrop-blur-sm transition hover:bg-white hover:scale-110 active:scale-95"
+                      className="absolute right-4 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white/90 bg-white/95 text-slate-800 shadow-xl backdrop-blur-sm transition hover:bg-white hover:scale-110 active:scale-95 sm:flex"
                       aria-label="Next image"
                     >
                       <ChevronRight className="h-6 w-6" strokeWidth={2.5} />
@@ -273,7 +273,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
 
             {/* Right: Package summary - no background color */}
             <aside className="flex flex-1 flex-col px-4 py-4 sm:py-8 lg:mt-8 lg:px-6 lg:py-4">
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-6 items-center sm:items-start text-center sm:text-left">
                 <h1
                   className="font-bold uppercase tracking-tight text-[#00843d]"
                   style={{
@@ -285,10 +285,10 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
                   {exp.title}
                 </h1>
 
-                <div className="flex items-center gap-3 text-slate-600 dark:text-slate-300">
+                <div className="flex items-center justify-center gap-3 text-slate-600 dark:text-slate-300">
                   <MapPin className="h-6 w-6 shrink-0" strokeWidth={2.5} />
                   <span
-                    className="font-semibold text-slate-600 dark:text-slate-300"
+                    className="font-semibold text-slate-600 dark:text-slate-300 text-center"
                     style={{
                       fontFamily: '"Lexend Deca", sans-serif',
                       fontSize: "clamp(18px, 4.5vw, 22px)",
@@ -301,9 +301,9 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
 
                 <div className="h-px w-full bg-slate-200 dark:bg-slate-700" aria-hidden />
 
-                <div className="flex items-start gap-3 text-slate-600 dark:text-slate-300">
+                <div className="flex items-start justify-center gap-3 text-slate-600 dark:text-slate-300">
                   <Clock3 className="mt-0.5 h-6 w-6 shrink-0" strokeWidth={2.5} />
-                  <div className="space-y-0.5">
+                  <div className="space-y-0.5 text-center">
                     <p
                       className="font-semibold text-slate-600 dark:text-slate-300"
                       style={{
@@ -325,7 +325,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
                 <div className="mt-2">
                   <a
                     href="#enquiry-form"
-                    className="inline-flex min-h-[55px] items-center justify-center rounded-full bg-[#00843d] px-10 py-3 text-[18px] font-bold uppercase leading-[33px] tracking-[0.15em] text-white shadow-[0_8px_25px_rgb(0,132,61,0.35)] transition-all hover:scale-105 hover:bg-[#ff4106] active:scale-95"
+                    className="inline-flex w-full sm:w-auto min-h-[55px] items-center justify-center rounded-full bg-[#00843d] px-10 py-3 text-[18px] font-bold uppercase leading-[33px] tracking-[0.15em] text-white shadow-[0_8px_25px_rgb(0,132,61,0.35)] transition-all hover:scale-105 hover:bg-[#ff4106] active:scale-95"
                   >
                     Enquire now
                   </a>
@@ -343,7 +343,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
             {/* Left: Trip Highlights section (includes Itinerary in same section) */}
             <div className="min-w-0 flex-1 space-y-6">
               <h2 className="text-xl font-bold text-[#00843d] sm:text-2xl">Trip Highlights</h2>
-              <p className="max-w-xl leading-relaxed text-slate-700 dark:text-slate-300">
+              <p className="max-w-xl leading-relaxed text-slate-700 dark:text-slate-300 text-justify">
                 {exp.description || "Explore this experience with comfortable stays and curated sightseeing."}
               </p>
               <div className="h-px w-full max-w-xl bg-slate-300 dark:bg-slate-700" aria-hidden />

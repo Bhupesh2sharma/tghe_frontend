@@ -42,9 +42,12 @@ function ExperienceCard({
         />
       </div>
 
-      <div className="flex flex-1 flex-col items-center justify-between gap-6 py-8">
+        <div className="flex flex-1 flex-col items-center justify-between gap-6 py-8">
         <div className="flex flex-col items-center gap-4">
-          <h3 className="line-clamp-2 min-h-[50px] text-center text-xl font-bold uppercase leading-[1.1] tracking-tight text-[#00843d] md:min-h-[72px] md:text-3xl" style={{ fontFamily: '"Lexend Deca", sans-serif' }}>
+          <h3
+            className="max-w-[260px] truncate text-center text-xl font-bold uppercase leading-[1.1] tracking-tight text-[#00843d] md:max-w-[320px] md:text-3xl"
+            style={{ fontFamily: '"Lexend Deca", sans-serif' }}
+          >
             {title}
           </h3>
           <p className="text-center text-lg font-semibold text-[#00843d] md:text-xl">
@@ -184,7 +187,7 @@ export default function ExperiencesSection() {
         {/* Left Arrow */}
         {total > cardsToShow && (
           <>
-            <div className="absolute -left-6 top-1/2 z-30 -translate-y-1/2 md:-left-12 lg:-left-16">
+            <div className="absolute -left-6 top-1/2 z-30 -translate-y-1/2 md:-left-12 lg:-left-16 hidden sm:block">
               <button
                 type="button"
                 onClick={goPrev}
@@ -198,7 +201,7 @@ export default function ExperiencesSection() {
               </button>
             </div>
 
-            <div className="absolute -right-6 top-1/2 z-30 -translate-y-1/2 md:-right-12 lg:-right-16">
+            <div className="absolute -right-6 top-1/2 z-30 -translate-y-1/2 md:-right-12 lg:-right-16 hidden sm:block">
               <button
                 type="button"
                 onClick={goNext}

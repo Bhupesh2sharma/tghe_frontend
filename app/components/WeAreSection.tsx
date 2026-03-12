@@ -45,9 +45,13 @@ export default function WeAreSection() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="mx-auto flex max-w-5xl flex-col items-center space-y-8 text-center text-white/90 sm:space-y-10 md:space-y-12"
+          className="mx-auto flex max-w-5xl flex-col items-start space-y-8 text-justify text-white/90 sm:space-y-10 md:space-y-12 md:items-center md:text-center"
+          style={{ fontFamily: '"Lexend Deca", sans-serif' }}
         >
-          <motion.p variants={fadeInVariants} className="font-medium text-base leading-relaxed tracking-tight sm:text-[20px] sm:leading-[28px]" style={{ fontFamily: '"Lexend Deca", sans-serif' }}>
+          <motion.p
+            variants={fadeInVariants}
+            className="font-medium text-[20px] leading-[28px] tracking-tight"
+          >
             We are The Great Himalayan Escape, your trusted travel partner for
             exploring the breathtaking beauty of Sikkim and the Himalayas.
             Dedicated to creating unforgettable journeys, we specialize in
