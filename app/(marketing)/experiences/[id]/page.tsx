@@ -191,6 +191,9 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
               <article className="relative overflow-hidden rounded-[40px] bg-black/10">
               <div
                 className="relative aspect-[4/3] w-full"
+                onClick={() => {
+                  if (heroTotal > 1) goNext();
+                }}
                 onTouchStart={(e) => {
                   heroTouchStartX.current = e.touches[0].clientX;
                 }}

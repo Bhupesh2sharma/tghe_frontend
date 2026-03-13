@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 
 // Images from public/img – add or reorder as needed
@@ -21,6 +21,15 @@ const images = [
 export default function HeroCarousel() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isMobile, setIsMobile] = useState(false);
+    const touchStartX = useRef<number | null>(null);
+
+    const goNext = useCallback(() => {
+        setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, []);
+
+    const goPrev = useCallback(() => {
+        setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+    }, []);
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -28,14 +37,14 @@ export default function HeroCarousel() {
         window.addEventListener("resize", handleResize);
 
         const timer = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % images.length);
+            goNext();
         }, 2500);
 
         return () => {
             window.removeEventListener("resize", handleResize);
             clearInterval(timer);
         };
-    }, []);
+    }, [goNext]);
 
     const getCardStyle = (index: number) => {
         const total = images.length;
@@ -63,7 +72,23 @@ export default function HeroCarousel() {
     };
 
     return (
-        <div className="relative flex h-[580px] w-full items-center justify-center overflow-hidden pt-2 pb-0 md:h-[680px]">
+        <div
+            className="relative flex h-[580px] w-full items-center justify-center overflow-hidden pt-2 pb-0 md:h-[680px]"
+            onTouchStart={(e) => {
+                touchStartX.current = e.touches[0].clientX;
+            }}
+            onTouchEnd={(e) => {
+                if (touchStartX.current === null) return;
+                const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+                const threshold = 40;
+                if (deltaX > threshold) {
+                    goPrev();
+                } else if (deltaX < -threshold) {
+                    goNext();
+                }
+                touchStartX.current = null;
+            }}
+        >
             {/* 3D Stack Layer */}
             <div
                 className="relative flex h-full w-full items-center justify-center"
