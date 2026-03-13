@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState, useEffect } from "react";
+import { use, useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -37,6 +37,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [isCopied, setIsCopied] = useState(false);
   const [createEnquiry, { isLoading: isEnquirySubmitting }] = useCreateEnquiryMutation();
+  const heroTouchStartX = useRef<number | null>(null);
 
   const heroImages: { src: string; caption: string }[] =
     exp?.images && exp.images.length > 0
@@ -188,7 +189,23 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
             {/* Left: Image hero carousel + facilities strip */}
             <div className="w-full lg:w-[55%]">
               <article className="relative overflow-hidden rounded-[40px] bg-black/10">
-                <div className="relative aspect-[4/3] w-full">
+              <div
+                className="relative aspect-[4/3] w-full"
+                onTouchStart={(e) => {
+                  heroTouchStartX.current = e.touches[0].clientX;
+                }}
+                onTouchEnd={(e) => {
+                  if (heroTouchStartX.current === null || heroTotal <= 1) return;
+                  const deltaX = e.changedTouches[0].clientX - heroTouchStartX.current;
+                  const threshold = 40;
+                  if (deltaX > threshold) {
+                    goPrev();
+                  } else if (deltaX < -threshold) {
+                    goNext();
+                  }
+                  heroTouchStartX.current = null;
+                }}
+              >
                   {heroImages.map((slide: { src: string; caption: string }, idx: number) => (
                     <div
                       key={idx}

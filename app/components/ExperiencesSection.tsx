@@ -80,6 +80,7 @@ export default function ExperiencesSection() {
   const [direction, setDirection] = useState<"left" | "right">("right");
   const isPaused = useRef(false);
   const [cardsToShow, setCardsToShow] = useState(3);
+  const touchStartX = useRef<number | null>(null);
   const total = packages.length;
 
   useEffect(() => {
@@ -222,6 +223,23 @@ export default function ExperiencesSection() {
           className="overflow-hidden py-8"
           onMouseEnter={() => (isPaused.current = true)}
           onMouseLeave={() => (isPaused.current = false)}
+          onTouchStart={(e) => {
+            if (cardsToShow !== 1) return;
+            touchStartX.current = e.touches[0].clientX;
+            isPaused.current = true;
+          }}
+          onTouchEnd={(e) => {
+            if (cardsToShow !== 1 || touchStartX.current === null) return;
+            const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+            const threshold = 40; // minimal swipe distance
+            if (deltaX > threshold) {
+              goPrev();
+            } else if (deltaX < -threshold) {
+              goNext();
+            }
+            touchStartX.current = null;
+            isPaused.current = false;
+          }}
         >
           <AnimatePresence mode="popLayout" custom={direction} initial={false}>
             <motion.div
