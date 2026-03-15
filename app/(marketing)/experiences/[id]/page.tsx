@@ -363,7 +363,10 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
             {/* Left: Trip Highlights section (includes Itinerary in same section) */}
             <div className="min-w-0 flex-1 space-y-6">
               <h2 className="text-xl font-bold text-[#00843d] sm:text-2xl">Trip Highlights</h2>
-              <p className="max-w-xl leading-relaxed text-slate-700 dark:text-slate-300 text-justify">
+              <p
+                className="max-w-xl leading-relaxed text-justify dark:text-[hsl(0,0%,75%)]"
+                style={{ color: "hsl(0, 0%, 22%)" }}
+              >
                 {exp.description || "Explore this experience with comfortable stays and curated sightseeing."}
               </p>
               <div className="h-px w-full max-w-xl bg-slate-300 dark:bg-slate-700" aria-hidden />

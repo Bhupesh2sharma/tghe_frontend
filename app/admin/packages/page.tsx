@@ -163,9 +163,13 @@ export default function AdminPackagesPage() {
       if (editingId) {
         const result = await updatePackage({ id: editingId, formData }).unwrap();
         setEditingId(result.data._id);
+        setImageFiles([]);
+        if (imagesInputRef.current) imagesInputRef.current.value = "";
       } else {
         const result = await createPackage(formData).unwrap();
         setEditingId(result.data._id);
+        setImageFiles([]);
+        if (imagesInputRef.current) imagesInputRef.current.value = "";
       }
     } catch (err: unknown) {
       const msg =
@@ -346,7 +350,11 @@ export default function AdminPackagesPage() {
                   type="file"
                   accept="image/*"
                   multiple
-                  onChange={(e) => setImageFiles(Array.from(e.target.files ?? []))}
+                  onChange={(e) => {
+                    const files = e.target.files ? Array.from(e.target.files) : [];
+                    if (files.length) setImageFiles((prev) => [...prev, ...files]);
+                    e.target.value = "";
+                  }}
                   className="block w-full text-xs text-gray-600 dark:text-gray-300 file:mr-3 file:rounded-lg file:border-0 file:bg-gray-100 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-gray-700 hover:file:bg-gray-200 dark:file:bg-gray-700 dark:file:text-gray-100"
                 />
                 <p className="mt-1 text-[11px] text-gray-400">

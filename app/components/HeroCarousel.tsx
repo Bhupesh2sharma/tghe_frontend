@@ -9,12 +9,12 @@ const images = [
     { id: 1, src: "/img/bliss1.jpg", title: "KALIMPONG", subtitle: "Haven of Art & Culture" },
     { id: 2, src: "/img/bliss2.jpg", title: "DARJEELING", subtitle: "Queen of the Hills" },
     { id: 3, src: "/img/1747135750.mg%20marg%20(2).jpg", title: "GANGTOK", subtitle: "Gateway to Sikkim" },
-    { id: 4, src: "/img/escade1.jpg", title: "PELLING", subtitle: "Mist-covered Peaks" },
-    { id: 5, src: "/img/1747116035.buddha%20park%202.jpg", title: "NAMCHI", subtitle: "Sky High Spiritualism" },
+    { id: 4, src: "/img/1738759733.himalayan-escapade-thumbnail-image.jpg", title: "PELLING", subtitle: "Mist-covered Peaks" },
+    { id: 5, src: "/img/destination3.jpg", title: "NAMCHI", subtitle: "Sky High Spiritualism" },
     { id: 6, src: "/img/bliss3.jpg", title: "LACHUNG", subtitle: "Valley of Flowers" },
     { id: 7, src: "/img/escade2.jpg", title: "KURSEONG", subtitle: "Tea Estates & Tranquility" },
-    { id: 8, src: "/img/destination1.jpg", title: "RAVANGLA", subtitle: "Buddha Park & Beyond" },
-    { id: 9, src: "/img/himalyandelight1.jpg", title: "TSONGO", subtitle: "Sacred Glacial Lake" },
+    { id: 8, src: "/img/1747116035.buddha park 2.jpg", title: "RAVANGLA", subtitle: "Buddha Park & Beyond" },
+    { id: 9, src: "/img/1738674995.himalayan-delight-thumbnail-image.jpg", title: "TSONGO", subtitle: "Sacred Glacial Lake" },
     { id: 10, src: "/img/bliss4.jpg", title: "YUMTHANG", subtitle: "Alpine Flower Valley" },
 ];
 
